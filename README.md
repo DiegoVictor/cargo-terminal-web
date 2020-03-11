@@ -1,4 +1,5 @@
 # About
+Project built to manage vehicles that arrive at a terminal, it permits users to register drivers, vehicles and drivers' origins and destinations.
 
 # Install
 ```
@@ -15,7 +16,7 @@ This project is configured with [Reactotron](https://github.com/infinitered/reac
 Rename the `.env.example` to `.env` then just update with yours settings.
 
 # API
-Start the server in the [`api`]() folder (see its README for more information). If any change in the api's port or host was made remember to update the .env too.
+Start the server in the [`api`](https://github.com/DiegoVictor/truck-system/tree/master/api) folder (see its README for more information). If any change in the api's port or host was made remember to update the .env too.
 
 # Start up
 ```
