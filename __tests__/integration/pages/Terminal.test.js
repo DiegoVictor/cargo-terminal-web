@@ -3,7 +3,6 @@ import { render, fireEvent } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import { Router } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
-import faker from 'faker';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
