@@ -37,7 +37,7 @@
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect"
     ],
-    "coverageDirectory": "__tests__/coverage",
+    "coverageDirectory": "tests/coverage",
     "collectCoverageFrom": [
       "!src/components/Description/*.js",
       "!src/components/Input/*.js",
@@ -50,11 +50,11 @@
       "!src/*.js"
     ],
     "testMatch": [
-      "**/__tests__/**/*.test.js"
+      "**/tests/**/*.test.js"
     ],
     "roots": [
       "<rootDir>/src/",
-      "<rootDir>/__tests__/"
+      "<rootDir>/tests/"
     ]
   },
   "eslintConfig": {
