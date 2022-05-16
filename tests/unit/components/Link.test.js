@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Router } from 'react-router-dom';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import history from '~/services/history';
 import Link from '~/components/Link';
