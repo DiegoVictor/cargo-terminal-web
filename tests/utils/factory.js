@@ -1,5 +1,5 @@
 import factory from 'factory-girl';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 factory.define('Driver', {}, async () => {
   const vehicle = await factory.attrs('Vehicle');
@@ -8,7 +8,7 @@ factory.define('Driver', {}, async () => {
     name: faker.name.findName,
     cpf: () =>
       String(faker.datatype.number({ min: 11111111111, max: 99999999999 })),
-    phone: faker.phone.phoneNumber,
+    phone: faker.phone.number,
     birthday: () => faker.date.past().toLocaleString(),
     cnh_number: () =>
       String(faker.datatype.number({ min: 11111111111, max: 99999999999 })),
