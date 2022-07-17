@@ -5,7 +5,7 @@
   "dependencies": {
     "@unform/core": "^2.0.0",
     "@unform/web": "^2.0.0",
-    "axios": "^0.27.2",
+    "axios": "^0.21.2",
     "bootstrap": "^4.4.1",
     "history": "^4.10.1",
     "prop-types": "^15.8.1",
