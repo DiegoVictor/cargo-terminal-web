@@ -3,8 +3,8 @@ import { render, fireEvent } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import { Router } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 import { act } from 'react-dom/test-utils';
+
 import Drivers from '~/pages/Drivers';
 import api from '~/services/api';
 import factory from '../../utils/factory';

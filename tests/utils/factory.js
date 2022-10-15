@@ -1,19 +1,19 @@
 import factory from 'factory-girl';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 factory.define('Driver', {}, async () => {
   const vehicle = await factory.attrs('Vehicle');
   return {
-    _id: faker.random.uuid,
+    _id: faker.datatype.uuid,
     name: faker.name.findName,
     cpf: () =>
-      String(faker.random.number({ min: 11111111111, max: 99999999999 })),
-    phone: faker.phone.phoneNumber,
+      String(faker.datatype.number({ min: 11111111111, max: 99999999999 })),
+    phone: faker.phone.number,
     birthday: () => faker.date.past().toLocaleString(),
     cnh_number: () =>
-      String(faker.random.number({ min: 11111111111, max: 99999999999 })),
-    cnh_type: () => faker.random.arrayElement(['A', 'B', 'C', 'D', 'E']),
-    gender: () => faker.random.arrayElement(['F', 'M', 'O']),
+      String(faker.datatype.number({ min: 11111111111, max: 99999999999 })),
+    cnh_type: () => faker.helpers.arrayElement(['A', 'B', 'C', 'D', 'E']),
+    gender: () => faker.helpers.arrayElement(['F', 'M', 'O']),
     vehicle,
   };
 });
@@ -22,9 +22,9 @@ factory.define(
   'Vehicle',
   {},
   {
-    _id: faker.random.uuid,
+    _id: faker.datatype.uuid,
     model: faker.name.findName,
-    type: () => faker.random.arrayElement([1, 2, 3, 4, 5]),
+    type: () => faker.helpers.arrayElement([1, 2, 3, 4, 5]),
   }
 );
 
@@ -34,7 +34,7 @@ factory.define(
   {
     origins: () => [[faker.address.longitude(), faker.address.latitude()]],
     destinations: () => [[faker.address.longitude(), faker.address.latitude()]],
-    type: () => faker.random.arrayElement([1, 2, 3, 4, 5]),
+    type: () => faker.helpers.arrayElement([1, 2, 3, 4, 5]),
   }
 );
 
@@ -43,8 +43,8 @@ factory.define('Arrival', {}, async () => {
   const vehicle = await factory.attrs('Vehicle');
 
   return {
-    _id: faker.random.uuid,
-    filled: faker.random.boolean,
+    _id: faker.datatype.uuid,
+    filled: faker.datatype.boolean,
     driver,
     vehicle,
     origin: () => [faker.address.longitude(), faker.address.latitude()],
