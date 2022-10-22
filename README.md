@@ -9,9 +9,6 @@ $ yarn
 # Dependencies
 Was installed and configured the `eslint` and `prettier` to keep the code clean and patterned.
 
-# Reactotron
-This project is configured with [Reactotron](https://github.com/infinitered/reactotron), just open the Reactotron GUI before the app is up and running, after start the app Reactotron will identify new connections.
-
 # .env
 Rename the `.env.example` to `.env` then just update with yours settings.
 
