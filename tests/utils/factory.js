@@ -5,7 +5,7 @@ factory.define('Driver', {}, async () => {
   const vehicle = await factory.attrs('Vehicle');
   return {
     _id: faker.datatype.uuid,
-    name: faker.name.findName,
+    name: faker.name.firstName,
     cpf: () =>
       String(faker.datatype.number({ min: 11111111111, max: 99999999999 })),
     phone: faker.phone.number,
@@ -23,7 +23,11 @@ factory.define(
   {},
   {
     _id: faker.datatype.uuid,
-    model: faker.name.findName,
+    model: () =>
+      `${faker.vehicle.model()} ${faker.datatype.number({
+        min: 2000,
+        max: 3000,
+      })}`,
     type: () => faker.helpers.arrayElement([1, 2, 3, 4, 5]),
   }
 );
