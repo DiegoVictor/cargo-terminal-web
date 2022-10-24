@@ -9,12 +9,12 @@ import factory from '../../utils/factory';
 import Travels from '~/pages/Travels';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 
-const api_mock = new MockAdapter(api);
+const apiMock = new MockAdapter(api);
 
 describe('Travels page', () => {
   it('should be able to list travels', async () => {
     const travel = await factory.attrs('Travel');
-    api_mock.onGet('travels').reply(200, [travel]);
+    apiMock.onGet('travels').reply(200, [travel]);
 
     let getByText;
     await act(async () => {

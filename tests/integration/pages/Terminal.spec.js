@@ -11,7 +11,7 @@ import history from '~/services/history';
 import Terminal from '~/pages/Terminal';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 
-const api_mock = new MockAdapter(api);
+const apiMock = new MockAdapter(api);
 
 jest.mock('react-toastify');
 toast.error = jest.fn();
@@ -22,7 +22,7 @@ describe('Terminal page', () => {
     const vehicles = await factory.attrsMany('Vehicle', 3);
     const arrivals = await factory.attrsMany('Arrival', 3);
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, drivers)
       .onGet('vehicles')
@@ -42,7 +42,7 @@ describe('Terminal page', () => {
       getByText = component.getByText;
     });
 
-    arrivals.forEach(arrival => {
+    arrivals.forEach((arrival) => {
       expect(getByText(arrival.driver.name)).toBeInTheDocument();
       expect(
         getByText(
@@ -62,15 +62,17 @@ describe('Terminal page', () => {
 
     arrivals[2].createdAt = new Date('03/09/2020');
 
-    const date_start = new Date('03/09/2020');
-    const date_end = new Date('03/10/2020');
+    const dateStart = new Date('03/09/2020');
+    const dateEnd = new Date('03/10/2020');
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, drivers)
       .onGet('vehicles')
       .reply(200, vehicles)
-      .onGet('arrivals', { params: { date_start, date_end } })
+      .onGet('arrivals', {
+        params: { date_start: dateStart, date_end: dateEnd },
+      })
       .reply(200, [arrivals[2]])
       .onGet('arrivals')
       .reply(200, arrivals);
@@ -89,13 +91,13 @@ describe('Terminal page', () => {
 
     await act(async () => {
       fireEvent.change(getByPlaceholderText('Inicio'), {
-        target: date_start,
+        target: dateStart,
       });
     });
 
     await act(async () => {
       fireEvent.change(getByPlaceholderText('Fim'), {
-        target: date_end,
+        target: dateEnd,
       });
     });
 
@@ -105,9 +107,9 @@ describe('Terminal page', () => {
   it('should be able to create an arrival', async () => {
     const driver = await factory.attrs('Driver');
     const vehicle = await factory.attrs('Vehicle');
-    const [arrival, new_arrival] = await factory.attrsMany('Arrival', 2);
+    const [arrival, newArrival] = await factory.attrsMany('Arrival', 2);
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [driver])
       .onGet('vehicles')
@@ -115,7 +117,7 @@ describe('Terminal page', () => {
       .onGet('arrivals')
       .reply(200, [arrival])
       .onPost('arrivals')
-      .reply(200, { ...new_arrival, driver, vehicle });
+      .reply(200, { ...newArrival, driver, vehicle });
 
     let getByText;
     let getByTestId;
@@ -144,27 +146,27 @@ describe('Terminal page', () => {
     });
     fireEvent.change(getByPlaceholderText('Carregado'), {
       target: {
-        value: new_arrival.filled ? 1 : 0,
+        value: newArrival.filled ? 1 : 0,
       },
     });
     fireEvent.change(getByTestId('latitude_origin'), {
       target: {
-        value: new_arrival.origin[1],
+        value: newArrival.origin[1],
       },
     });
     fireEvent.change(getByTestId('longitude_origin'), {
       target: {
-        value: new_arrival.origin[0],
+        value: newArrival.origin[0],
       },
     });
     fireEvent.change(getByTestId('latitude_destination'), {
       target: {
-        value: new_arrival.destination[1],
+        value: newArrival.destination[1],
       },
     });
     fireEvent.change(getByTestId('longitude_destination'), {
       target: {
-        value: new_arrival.destination[0],
+        value: newArrival.destination[0],
       },
     });
 
@@ -173,24 +175,22 @@ describe('Terminal page', () => {
     });
 
     expect(
-      getByTestId(`arrival_driver_name_${new_arrival._id}`)
+      getByTestId(`arrival_driver_name_${newArrival._id}`)
     ).toBeInTheDocument();
     expect(
-      getByTestId(`arrival_vehicle_model_${new_arrival._id}`)
+      getByTestId(`arrival_vehicle_model_${newArrival._id}`)
     ).toBeInTheDocument();
-    expect(
-      getByTestId(`arrival_filled_${new_arrival._id}`)
-    ).toBeInTheDocument();
-    expect(getByText(new_arrival.origin.join(', '))).toBeInTheDocument();
-    expect(getByText(new_arrival.destination.join(', '))).toBeInTheDocument();
+    expect(getByTestId(`arrival_filled_${newArrival._id}`)).toBeInTheDocument();
+    expect(getByText(newArrival.origin.join(', '))).toBeInTheDocument();
+    expect(getByText(newArrival.destination.join(', '))).toBeInTheDocument();
   });
 
   it('should not be able to create an arrival', async () => {
     const driver = await factory.attrs('Driver');
     const vehicle = await factory.attrs('Vehicle');
-    const [arrival, new_arrival] = await factory.attrsMany('Arrival', 2);
+    const [arrival, newArrival] = await factory.attrsMany('Arrival', 2);
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [driver])
       .onGet('vehicles')
@@ -225,27 +225,27 @@ describe('Terminal page', () => {
     });
     fireEvent.change(getByPlaceholderText('Carregado'), {
       target: {
-        value: new_arrival.filled ? 1 : 0,
+        value: newArrival.filled ? 1 : 0,
       },
     });
     fireEvent.change(getByTestId('latitude_origin'), {
       target: {
-        value: new_arrival.origin[1],
+        value: newArrival.origin[1],
       },
     });
     fireEvent.change(getByTestId('longitude_origin'), {
       target: {
-        value: new_arrival.origin[0],
+        value: newArrival.origin[0],
       },
     });
     fireEvent.change(getByTestId('latitude_destination'), {
       target: {
-        value: new_arrival.destination[1],
+        value: newArrival.destination[1],
       },
     });
     fireEvent.change(getByTestId('longitude_destination'), {
       target: {
-        value: new_arrival.destination[0],
+        value: newArrival.destination[0],
       },
     });
 
@@ -261,12 +261,12 @@ describe('Terminal page', () => {
   it('should be able to edit an arrival', async () => {
     const driver = await factory.attrs('Driver');
     const vehicle = await factory.attrs('Vehicle');
-    const [arrival, new_arrival, ...rest] = await factory.attrsMany(
+    const [arrival, newArrival, ...rest] = await factory.attrsMany(
       'Arrival',
       3
     );
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [driver])
       .onGet('vehicles')
@@ -274,7 +274,7 @@ describe('Terminal page', () => {
       .onGet('arrivals')
       .reply(200, [arrival, ...rest])
       .onPut(`/arrivals/${arrival._id}`)
-      .reply(200, { ...new_arrival, driver, vehicle, _id: arrival._id });
+      .reply(200, { ...newArrival, driver, vehicle, _id: arrival._id });
 
     let getByText;
     let getByTestId;
@@ -303,27 +303,27 @@ describe('Terminal page', () => {
     });
     fireEvent.change(getByPlaceholderText('Carregado'), {
       target: {
-        value: new_arrival.filled ? 1 : 0,
+        value: newArrival.filled ? 1 : 0,
       },
     });
     fireEvent.change(getByTestId('latitude_origin'), {
       target: {
-        value: new_arrival.origin[1],
+        value: newArrival.origin[1],
       },
     });
     fireEvent.change(getByTestId('longitude_origin'), {
       target: {
-        value: new_arrival.origin[0],
+        value: newArrival.origin[0],
       },
     });
     fireEvent.change(getByTestId('latitude_destination'), {
       target: {
-        value: new_arrival.destination[1],
+        value: newArrival.destination[1],
       },
     });
     fireEvent.change(getByTestId('longitude_destination'), {
       target: {
-        value: new_arrival.destination[0],
+        value: newArrival.destination[0],
       },
     });
 
@@ -338,7 +338,7 @@ describe('Terminal page', () => {
       getByTestId(`arrival_vehicle_model_${arrival._id}`)
     ).toBeInTheDocument();
     expect(getByTestId(`arrival_filled_${arrival._id}`)).toBeInTheDocument();
-    expect(getByText(new_arrival.origin.join(', '))).toBeInTheDocument();
-    expect(getByText(new_arrival.destination.join(', '))).toBeInTheDocument();
+    expect(getByText(newArrival.origin.join(', '))).toBeInTheDocument();
+    expect(getByText(newArrival.destination.join(', '))).toBeInTheDocument();
   });
 });

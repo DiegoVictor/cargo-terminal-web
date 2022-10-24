@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import { Router } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -10,7 +10,7 @@ import api from '~/services/api';
 import factory from '../../utils/factory';
 import history from '~/services/history';
 
-const api_mock = new MockAdapter(api);
+const apiMock = new MockAdapter(api);
 
 jest.mock('react-toastify');
 toast.error = jest.fn();
@@ -20,7 +20,7 @@ describe('Drivers page', () => {
     const drivers = await factory.attrsMany('Driver', 3);
     const vehicles = await factory.attrsMany('Vehicle', 3);
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, drivers)
       .onGet('vehicles')
@@ -39,8 +39,8 @@ describe('Drivers page', () => {
       getByTestId = component.getByTestId;
     });
 
-    drivers.forEach(driver => {
-      Object.keys(driver).forEach(field => {
+    drivers.forEach((driver) => {
+      Object.keys(driver).forEach((field) => {
         if (!['_id', 'cnh_type', 'gender', 'vehicle'].includes(field)) {
           expect(getByText(driver[field])).toBeInTheDocument();
         }
@@ -53,7 +53,7 @@ describe('Drivers page', () => {
     const driver = await factory.attrs('Driver');
     const vehicles = await factory.attrsMany('Vehicle', 3);
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [driver])
       .onPut(`/drivers/${driver._id}`)
@@ -89,7 +89,7 @@ describe('Drivers page', () => {
     const driver = await factory.attrs('Driver');
     const vehicles = await factory.attrsMany('Vehicle', 3);
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [driver])
       .onPut(`/drivers/${driver._id}`)
@@ -123,7 +123,7 @@ describe('Drivers page', () => {
     const driver = await factory.attrs('Driver');
     const vehicle = await factory.attrs('Vehicle');
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [])
       .onPost('drivers')
@@ -192,7 +192,9 @@ describe('Drivers page', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
-    Object.keys(driver).forEach(field => {
+    await waitFor(() => getByText(driver.name));
+
+    Object.keys(driver).forEach((field) => {
       if (!['_id', 'cnh_type', 'gender', 'vehicle'].includes(field)) {
         expect(getByText(driver[field])).toBeInTheDocument();
       }
@@ -204,7 +206,7 @@ describe('Drivers page', () => {
     const driver = await factory.attrs('Driver');
     const vehicle = await factory.attrs('Vehicle');
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [])
       .onPost('drivers')
@@ -277,16 +279,16 @@ describe('Drivers page', () => {
   });
 
   it('should be able to edit a driver', async () => {
-    const [driver, new_driver, ...rest] = await factory.attrsMany('Driver', 3);
+    const [driver, newDriver, ...rest] = await factory.attrsMany('Driver', 3);
     const vehicle = await factory.attrs('Vehicle');
 
-    new_driver._id = driver._id;
+    newDriver._id = driver._id;
 
-    api_mock
+    apiMock
       .onGet('drivers')
       .reply(200, [driver, ...rest])
       .onPut(`/drivers/${driver._id}`)
-      .reply(200, new_driver)
+      .reply(200, newDriver)
       .onGet('vehicles')
       .reply(200, [vehicle]);
 
@@ -308,37 +310,37 @@ describe('Drivers page', () => {
     fireEvent.click(getByTestId(`driver_edit_${driver._id}`));
     fireEvent.change(getByPlaceholderText('Nome'), {
       target: {
-        value: new_driver.name,
+        value: newDriver.name,
       },
     });
     fireEvent.change(getByPlaceholderText('CPF'), {
       target: {
-        value: new_driver.cpf,
+        value: newDriver.cpf,
       },
     });
     fireEvent.change(getByPlaceholderText('Telefone'), {
       target: {
-        value: new_driver.phone,
+        value: newDriver.phone,
       },
     });
     fireEvent.change(getByPlaceholderText('Data de Nascimento'), {
       target: {
-        value: new_driver.birthday,
+        value: newDriver.birthday,
       },
     });
     fireEvent.change(getByPlaceholderText('Gênero'), {
       target: {
-        value: new_driver.gender,
+        value: newDriver.gender,
       },
     });
     fireEvent.change(getByPlaceholderText('CNH'), {
       target: {
-        value: new_driver.cnh_number,
+        value: newDriver.cnh_number,
       },
     });
     fireEvent.change(getByPlaceholderText('Tipo de CNH'), {
       target: {
-        value: new_driver.cnh_type,
+        value: newDriver.cnh_type,
       },
     });
 
@@ -346,13 +348,11 @@ describe('Drivers page', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
-    Object.keys(new_driver).forEach(field => {
+    Object.keys(newDriver).forEach((field) => {
       if (!['_id', 'cnh_type', 'gender', 'vehicle'].includes(field)) {
-        expect(getByText(new_driver[field])).toBeInTheDocument();
+        expect(getByText(newDriver[field])).toBeInTheDocument();
       }
     });
-    expect(
-      getByTestId(`driver_cnh_type_${new_driver._id}`)
-    ).toBeInTheDocument();
+    expect(getByTestId(`driver_cnh_type_${newDriver._id}`)).toBeInTheDocument();
   });
 });
