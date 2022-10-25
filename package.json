@@ -28,33 +28,6 @@
     "test": "jest --runInBand",
     "eject": "react-scripts eject"
   },
-  "jest": {
-    "moduleNameMapper": {
-      "^~/(.*)": "<rootDir>/src/$1"
-    },
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-dom/extend-expect"
-    ],
-    "coverageDirectory": "tests/coverage",
-    "collectCoverageFrom": [
-      "!src/components/Description/*.js",
-      "!src/components/Input/*.js",
-      "!src/components/Layout/*.js",
-      "!src/components/Modal/*.js",
-      "!src/components/Select/*.js",
-      "!src/config/*",
-      "!src/routes/**/*.js",
-      "!src/services/*",
-      "!src/*.js"
-    ],
-    "testMatch": [
-      "**/tests/**/*.test.js"
-    ],
-    "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/tests/"
-    ]
-  },
   "eslintConfig": {
     "extends": "react-app"
   },
