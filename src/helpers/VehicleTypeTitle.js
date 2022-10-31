@@ -1,4 +1,4 @@
-export default type => {
+export default (type) => {
   const types = {
     1: 'Caminhão 3/4',
     2: 'Caminhão Toco',
