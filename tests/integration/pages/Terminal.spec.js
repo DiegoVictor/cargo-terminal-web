@@ -6,10 +6,10 @@ import { act } from 'react-dom/test-utils';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
-import factory from '../../utils/factory';
 import history from '~/services/history';
 import Terminal from '~/pages/Terminal';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
+import factory from '../../utils/factory';
 
 const apiMock = new MockAdapter(api);
 

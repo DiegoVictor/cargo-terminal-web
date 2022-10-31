@@ -6,9 +6,9 @@ import { toast } from 'react-toastify';
 
 import api from '~/services/api';
 import history from '~/services/history';
-import factory from '../../utils/factory';
 import Vehicles from '~/pages/Vehicles';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
+import factory from '../../utils/factory';
 
 const apiMock = new MockAdapter(api);
 

@@ -5,9 +5,9 @@ import { Router } from 'react-router-dom';
 
 import api from '~/services/api';
 import history from '~/services/history';
-import factory from '../../utils/factory';
 import Travels from '~/pages/Travels';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
+import factory from '../../utils/factory';
 
 const apiMock = new MockAdapter(api);
 

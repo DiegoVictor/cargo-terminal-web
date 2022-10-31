@@ -7,8 +7,8 @@ import { act } from 'react-dom/test-utils';
 
 import Drivers from '~/pages/Drivers';
 import api from '~/services/api';
-import factory from '../../utils/factory';
 import history from '~/services/history';
+import factory from '../../utils/factory';
 
 const apiMock = new MockAdapter(api);
 
