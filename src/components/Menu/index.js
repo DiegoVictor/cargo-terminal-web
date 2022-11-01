@@ -10,16 +10,16 @@ export default () => {
         Terminal
       </Link>
 
+      <Link className="nav-link" to="/travels">
+        Viagens
+      </Link>
+
       <Link className="nav-link" to="/drivers">
         Motoristas
       </Link>
 
       <Link className="nav-link" to="/vehicles">
         Veiculos
-      </Link>
-
-      <Link className="nav-link" to="/travels">
-        Viagens
       </Link>
     </Container>
   );
