@@ -3,7 +3,7 @@ import React from 'react';
 import Link from '~/components/Link';
 import { Container } from './styles';
 
-export default () => {
+function Menu() {
   return (
     <Container>
       <Link className="nav-link" to="/">
@@ -23,4 +23,6 @@ export default () => {
       </Link>
     </Container>
   );
-};
+}
+
+export default Menu;
