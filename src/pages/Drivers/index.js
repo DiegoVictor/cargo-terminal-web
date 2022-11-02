@@ -19,18 +19,19 @@ import DriverForm from './Modals/DriverForm';
 function Drivers() {
   const [vehicles, setVehicles] = useState([]);
   const [drivers, setDrivers] = useState([]);
-  const [show_driver_modal, setShowDriverModal] = useState(false);
-  const [disable_driver, confirmDisableDriver] = useState(null);
-  const [driver, setDriver] = useState({});
+  const [showDriverModal, setShowDriverModal] = useState(false);
+  const [disableDriver, confirmDisableDriver] = useState(null);
+  const [edit, setEdit] = useState({});
   const [active, setActive] = useState(true);
   const [vehicle, setVehicle] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const handleDisableDriver = useCallback(() => {
     (async () => {
-      if (disable_driver) {
+      if (disableDriver) {
         try {
-          await api.put(`/drivers/${disable_driver._id}`, { active: false });
+          await api.put(`/drivers/${disableDriver._id}`, { active: false });
+
           confirmDisableDriver(null);
           setDrivers(drivers.filter(d => d._id !== disable_driver._id));
           toast.success('Motorista desativado com sucesso!');
@@ -39,7 +40,7 @@ function Drivers() {
         }
       }
     })();
-  }, [disable_driver, drivers]);
+  }, [disableDriver, drivers]);
 
   useEffect(() => {
     (async () => {
