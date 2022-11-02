@@ -33,7 +33,10 @@ function Drivers() {
           await api.put(`/drivers/${disableDriver._id}`, { active: false });
 
           confirmDisableDriver(null);
-          setDrivers(drivers.filter(d => d._id !== disable_driver._id));
+          setDrivers(
+            drivers.filter((driver) => driver._id !== disableDriver._id)
+          );
+
           toast.success('Motorista desativado com sucesso!');
         } catch (err) {
           toast.error('Não foi possivel desativar o motorista');
