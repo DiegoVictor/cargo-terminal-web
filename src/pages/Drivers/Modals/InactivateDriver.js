@@ -21,4 +21,16 @@ function InactivateDriver({ driver, cancel, handleDisableDriver }) {
   );
 }
 
+InactivateDriver.propTypes = {
+  driver: PropTypes.shape({
+    name: PropTypes.string,
+  }),
+  cancel: PropTypes.func.isRequired,
+  handleDisableDriver: PropTypes.func.isRequired,
+};
+
+InactivateDriver.defaultProps = {
+  driver: null,
+};
+
 export default InactivateDriver;
