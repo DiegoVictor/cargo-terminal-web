@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Form } from '@unform/web';
-import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import {
   Table,
@@ -9,30 +7,16 @@ import {
   ButtonToolbar,
   ToggleButton,
   ToggleButtonGroup,
-  Form as Frm,
   Spinner,
 } from 'react-bootstrap';
 
 import api from '~/services/api';
-import Layout from '~/components/Layout';
-import Input from '~/components/Input';
-import Select from '~/components/Select';
 import Description from '~/components/Description';
 import { Container, Right, Center } from './styles';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
-import Modal from '~/components/Modal';
+import DriverForm from './Modals/DriverForm';
 
-const schema = Yup.object().shape({
-  name: Yup.string().required(),
-  cpf: Yup.string().required(),
-  phone: Yup.string().required(),
-  birthday: Yup.string().required(),
-  cnh_number: Yup.string().required(),
-  cnh_type: Yup.string().required(),
-  gender: Yup.string().required(),
-});
-
-export default () => {
+function Drivers() {
   const [vehicles, setVehicles] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [show_driver_modal, setShowDriverModal] = useState(false);
@@ -41,36 +25,6 @@ export default () => {
   const [active, setActive] = useState(true);
   const [vehicle, setVehicle] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const handleDriverForm = useCallback(
-    data => {
-      (async () => {
-        try {
-          if (driver._id) {
-            const response = await api.put(`/drivers/${driver._id}`, data);
-            setDrivers(
-              drivers.map(d => {
-                if (d._id === driver._id) {
-                  return response.data;
-                }
-                return d;
-              })
-            );
-            toast.success('Motorista atualizado com sucesso!');
-          } else {
-            const response = await api.post('drivers', data);
-            setDrivers([...drivers, response.data]);
-            toast.success('Motorista criado com sucesso!');
-          }
-          setDriver({});
-          await setShowDriverModal(false);
-        } catch (err) {
-          toast.error('Não foi possivel criar o novo motorista');
-        }
-      })();
-    },
-    [driver._id, drivers]
-  );
 
   const handleDisableDriver = useCallback(() => {
     (async () => {
