@@ -13,4 +13,8 @@ const schema = Yup.object().shape({
 
 function DriverForm({ vehicles, driver, show, cancel, save }) {
 }
+DriverForm.defaultProps = {
+  driver: null,
+};
+
 export default DriverForm;
