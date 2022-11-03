@@ -314,4 +314,6 @@ function Drivers() {
       </Container>
     </Layout>
   );
-};
+}
+
+export default Drivers;
