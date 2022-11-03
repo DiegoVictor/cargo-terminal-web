@@ -64,135 +64,134 @@ function Drivers() {
   }, []);
 
   return (
-    <Layout>
-      <Container>
-        <div>
-          <Btn
-            data-testid="new"
-            size="sm"
-            onClick={() => {
-              setDriver({});
-              setShowDriverModal(true);
-            }}
-          >
-            Novo
-          </Btn>
+    <Container>
+      <div>
+        <Btn
+          data-testid="new"
+          size="sm"
+          onClick={() => {
+            setEdit({});
+            setShowDriverModal(true);
+          }}
+        >
+          Novo
+        </Btn>
 
-          <Right>
-            <ButtonToolbar>
-              <ToggleButtonGroup type="checkbox" defaultValue={[1]}>
-                <ToggleButton
-                  data-testid="active"
-                  onClick={() => {
-                    if (!loading) {
-                      setActive(!active);
-                    }
-                  }}
-                  size="sm"
-                  variant="outline-primary"
-                  value={1}
-                >
-                  Ativos
-                </ToggleButton>
-                <ToggleButton
-                  onClick={() => {
-                    if (!loading) {
-                      setVehicle(!vehicle);
-                    }
-                  }}
-                  size="sm"
-                  variant="outline-primary"
-                  value={2}
-                >
-                  Com veiculo proprio
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </ButtonToolbar>
-          </Right>
-        </div>
+        <Right>
+          <ButtonToolbar>
+            <ToggleButtonGroup type="checkbox" defaultValue={[1]}>
+              <ToggleButton
+                data-testid="active"
+                onClick={() => {
+                  if (!loading) {
+                    setActive(!active);
+                  }
+                }}
+                size="sm"
+                variant="outline-primary"
+                value={1}
+              >
+                Ativos
+              </ToggleButton>
+              <ToggleButton
+                onClick={() => {
+                  if (!loading) {
+                    setVehicle(!vehicle);
+                  }
+                }}
+                size="sm"
+                variant="outline-primary"
+                value={2}
+              >
+                Com veiculo proprio
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </ButtonToolbar>
+        </Right>
+      </div>
 
-        <Table responsive striped hover size="sm">
-          <thead>
+      <Table responsive striped hover size="sm">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th className="hidden-md">Data de Nascimento</th>
+            <th>CNH</th>
+            <th>CNH Tipo</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {loading ? (
             <tr>
-              <th>Nome</th>
-              <th>CPF</th>
-              <th>Telefone</th>
-              <th className="hidden-md">Data de Nascimento</th>
-              <th>CNH</th>
-              <th>CNH Tipo</th>
-              <th />
+              <td colSpan="7">
+                <Center>
+                  <Spinner animation="border" />
+                </Center>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan="7">
-                  <Center>
-                    <Spinner animation="border" />
-                  </Center>
-                </td>
-              </tr>
-            ) : (
-              <>
-                {drivers.map(driver => (
-                  <tr key={`driver_${driver._id}`}>
-                    <td>
-                      <Description>Nome</Description>
-                      {driver.name}
-                    </td>
-                    <td className="d-none d-sm-table-cell">
-                      <Description>CPF</Description>
-                      {driver.cpf}
-                    </td>
-                    <td className="d-none d-sm-table-cell">
-                      <Description>Telefone</Description>
-                      {driver.phone}
-                    </td>
+          ) : (
+            <>
+              {drivers.map((driver) => (
+                <tr key={`driver_${driver._id}`}>
+                  <td>
+                    <Description>Nome</Description>
+                    {driver.name}
+                  </td>
+                  <td className="d-none d-sm-table-cell">
+                    <Description>CPF</Description>
+                    {driver.cpf}
+                  </td>
+                  <td className="d-none d-sm-table-cell">
+                    <Description>Telefone</Description>
+                    {driver.phone}
+                  </td>
 
-                    <td className="d-none d-lg-table-cell">
-                      <Description>Data de Nascimento</Description>
-                      {driver.birthday}
-                    </td>
-                    <td className="d-none d-md-table-cell">
-                      <Description>CNH</Description>
-                      {driver.cnh_number}
-                    </td>
-                    <td className="d-none d-lg-table-cell">
-                      <Description>CNH Tipo</Description>
-                      <span data-testid={`driver_cnh_type_${driver._id}`}>
-                        {driver.cnh_type}
-                      </span>
-                    </td>
+                  <td className="d-none d-lg-table-cell">
+                    <Description>Data de Nascimento</Description>
+                    {driver.birthday}
+                  </td>
+                  <td className="d-none d-md-table-cell">
+                    <Description>CNH</Description>
+                    {driver.cnh_number}
+                  </td>
+                  <td className="d-none d-lg-table-cell">
+                    <Description>CNH Tipo</Description>
+                    <span data-testid={`driver_cnh_type_${driver._id}`}>
+                      {driver.cnh_type}
+                    </span>
+                  </td>
 
-                    <td>
-                      <BtnGroup>
-                        <Btn
-                          data-testid={`driver_edit_${driver._id}`}
-                          size="sm"
-                          type="button"
-                          onClick={() => {
-                            setDriver(driver);
-                            setShowDriverModal(true);
-                          }}
-                        >
-                          Editar
-                        </Btn>
-                        <Btn
-                          data-testid={`driver_disable_${driver._id}`}
-                          size="sm"
-                          type="button"
-                          onClick={() => confirmDisableDriver(driver)}
-                        >
-                          Desativar
-                        </Btn>
-                      </BtnGroup>
-                    </td>
-                  </tr>
-                ))}
-              </>
-            )}
-          </tbody>
-        </Table>
+                  <td>
+                    <BtnGroup>
+                      <Btn
+                        data-testid={`driver_edit_${driver._id}`}
+                        size="sm"
+                        type="button"
+                        onClick={() => {
+                          setEdit(driver);
+                          setShowDriverModal(true);
+                        }}
+                      >
+                        Editar
+                      </Btn>
+                      <Btn
+                        data-testid={`driver_disable_${driver._id}`}
+                        size="sm"
+                        type="button"
+                        onClick={() => confirmDisableDriver(driver)}
+                      >
+                        Desativar
+                      </Btn>
+                    </BtnGroup>
+                  </td>
+                </tr>
+              ))}
+            </>
+          )}
+        </tbody>
+      </Table>
 
       <InactivateDriver
         driver={disableDriver}
