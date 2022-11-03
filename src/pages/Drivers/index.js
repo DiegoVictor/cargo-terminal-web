@@ -13,7 +13,7 @@ import {
 import api from '~/services/api';
 import Description from '~/components/Description';
 import { Container, Right, Center } from './styles';
-import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
+import InactivateDriver from './Modals/InactivateDriver';
 import DriverForm from './Modals/DriverForm';
 
 function Drivers() {
@@ -194,26 +194,11 @@ function Drivers() {
           </tbody>
         </Table>
 
-        <Modal
-          title="Desativar"
-          show={!!disable_driver}
-          onHide={() => confirmDisableDriver(false)}
-        >
-          {disable_driver &&
-            `Deseja realmente desativar o(a) motorista ${disable_driver.name}?`}
-
-          <BtnGroup>
-            <Btn
-              variant="secondary"
-              onClick={() => confirmDisableDriver(false)}
-            >
-              Cancelar
-            </Btn>
-            <Btn onClick={handleDisableDriver} data-testid="confirm">
-              Confirmar
-            </Btn>
-          </BtnGroup>
-        </Modal>
+      <InactivateDriver
+        driver={disableDriver}
+        cancel={() => confirmDisableDriver(false)}
+        handleDisableDriver={handleDisableDriver}
+      />
 
         <Modal
           title="Motorista"
