@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+
 import api from '~/services/api';
 
 const schema = Yup.object().shape({
@@ -34,6 +36,23 @@ function DriverForm({ vehicles, driver, show, cancel, save }) {
   );
 
 }
+
+DriverForm.propTypes = {
+  vehicles: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      model: PropTypes.string.isRequired,
+      type: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  driver: PropTypes.shape({
+    _id: PropTypes.string,
+  }),
+  show: PropTypes.bool.isRequired,
+  cancel: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+};
+
 DriverForm.defaultProps = {
   driver: null,
 };
