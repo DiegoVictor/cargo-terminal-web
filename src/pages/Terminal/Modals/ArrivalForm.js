@@ -1,5 +1,15 @@
 import React, { useCallback } from 'react';
+import * as Yup from 'yup';
 import PropTypes from 'prop-types';
+
+const schema = Yup.object().shape({
+  filled: Yup.string().required(),
+  vehicle: Yup.string().required(),
+  driver: Yup.string().required(),
+  origin: Yup.string().required(),
+  destination: Yup.string().required(),
+});
+
 function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
 }
 
