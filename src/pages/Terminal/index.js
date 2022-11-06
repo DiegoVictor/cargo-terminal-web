@@ -1,14 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Form } from '@unform/web';
-import {
-  Table,
-  Spinner,
-  Button as Btn,
-  ButtonGroup as BtnGroup,
-  Form as Frm,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
@@ -23,15 +13,7 @@ import Modal from '~/components/Modal';
 import Description from '~/components/Description';
 import { Container, Center, Right } from './styles';
 
-const schema = Yup.object().shape({
-  filled: Yup.string().required(),
-  vehicle: Yup.string().required(),
-  driver: Yup.string().required(),
-  origin: Yup.string().required(),
-  destination: Yup.string().required(),
-});
-
-export default function Terminal() {
+function Terminal() {
   const [loading, setLoading] = useState(true);
   const [drivers, setDrivers] = useState([]);
   const [vehicles, setVehicles] = useState([]);
@@ -347,3 +329,5 @@ export default function Terminal() {
     </Layout>
   );
 }
+
+export default Terminal;
