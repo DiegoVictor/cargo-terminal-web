@@ -1,8 +1,20 @@
 import React, { useCallback } from 'react';
+import { Form } from '@unform/web';
+import {
+  Button as Btn,
+  ButtonGroup as BtnGroup,
+  Form as Frm,
+  Row,
+  Col,
+} from 'react-bootstrap';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
+import Select from '~/components/Select';
+import Input from '~/components/Input';
+import Modal from '~/components/Modal';
+import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 import api from '~/services/api';
 
 const schema = Yup.object().shape({
@@ -37,6 +49,106 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
     [arrival._id, save]
   );
 
+  return (
+    <Modal show={show} title="Terminal" onHide={cancel}>
+      <Form schema={schema} initialData={arrival} onSubmit={handleTerminalForm}>
+        <Frm.Group>
+          <Frm.Label>Motorista</Frm.Label>
+          <Select
+            className="form-control"
+            name="driver_id"
+            placeholder="Motorista"
+          >
+            {drivers.map((driver) => (
+              <option key={driver._id} value={driver._id}>
+                {driver.name}
+              </option>
+            ))}
+          </Select>
+        </Frm.Group>
+
+        <Frm.Group>
+          <Frm.Label>Veículo</Frm.Label>
+          <Select
+            className="form-control"
+            name="vehicle_id"
+            placeholder="Veículo"
+          >
+            {vehicles.map((vehicle) => (
+              <option key={vehicle._id} value={vehicle._id}>
+                {vehicle.model} ({VehicleTypeTitle(vehicle.type)})
+              </option>
+            ))}
+          </Select>
+        </Frm.Group>
+
+        <Frm.Group>
+          <Frm.Label>Carregado</Frm.Label>
+          <Select
+            className="form-control"
+            name="filled"
+            placeholder="Carregado"
+          >
+            <option value="0">Não</option>
+            <option value="1">Sim</option>
+          </Select>
+        </Frm.Group>
+
+        <Frm.Group>
+          <Frm.Label>Origem</Frm.Label>
+          <Row>
+            <Col>
+              <Frm.Label>Latidute</Frm.Label>
+              <Input
+                className="form-control"
+                name="origin[latitude]"
+                data-testid="latitude_origin"
+              />
+            </Col>
+            <Col>
+              <Frm.Label>Longitude</Frm.Label>
+              <Input
+                className="form-control"
+                name="origin[longitude]"
+                data-testid="longitude_origin"
+              />
+            </Col>
+          </Row>
+        </Frm.Group>
+
+        <Frm.Group>
+          <Frm.Label>Destino</Frm.Label>
+          <Row>
+            <Col>
+              <Frm.Label>Latidute</Frm.Label>
+              <Input
+                className="form-control"
+                name="destination[latitude]"
+                data-testid="latitude_destination"
+              />
+            </Col>
+            <Col>
+              <Frm.Label>Longitude</Frm.Label>
+              <Input
+                className="form-control"
+                name="destination[longitude]"
+                data-testid="longitude_destination"
+              />
+            </Col>
+          </Row>
+        </Frm.Group>
+
+        <BtnGroup>
+          <Btn data-testid="cancel" variant="secondary" onClick={cancel}>
+            Cancelar
+          </Btn>
+          <Btn data-testid="submit" type="submit">
+            Enviar
+          </Btn>
+        </BtnGroup>
+      </Form>
+    </Modal>
+  );
 }
 
 ArrivalForm.propTypes = {
