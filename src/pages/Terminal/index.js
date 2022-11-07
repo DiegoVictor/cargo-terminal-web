@@ -42,14 +42,14 @@ function Terminal() {
       setLoading(true);
       const { data } = await api.get('arrivals', {
         params: {
-          date_start,
-          date_end,
+          date_start: dateStart,
+          date_end: dateEnd,
         },
       });
       setArrivals(data);
       setLoading(false);
     })();
-  }, [date_start, date_end]);
+  }, [dateStart, dateEnd]);
 
   return (
     <Layout>
@@ -69,8 +69,8 @@ function Terminal() {
                 <DatePicker
                   data-testid="start"
                   className="form-control form-control-sm"
-                  selected={date_start}
-                  onChange={date => setDateStart(date)}
+                  selected={dateStart}
+                  onChange={(date) => setDateStart(date)}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="Inicio"
                 />
@@ -79,8 +79,8 @@ function Terminal() {
                 <DatePicker
                   data-testid="end"
                   className="form-control form-control-sm"
-                  selected={date_end}
-                  onChange={date => setDateEnd(date)}
+                  selected={dateEnd}
+                  onChange={(date) => setDateEnd(date)}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="Fim"
                 />
