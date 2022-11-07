@@ -18,40 +18,10 @@ function Terminal() {
   const [drivers, setDrivers] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [arrivals, setArrivals] = useState(null);
-  const [arrival, setArrival] = useState([]);
-  const [date_start, setDateStart] = useState(null);
-  const [date_end, setDateEnd] = useState(null);
-  const [show_arrival_modal, setShowArrivalModal] = useState(false);
-
-  const handleTerminalForm = useCallback(
-    data => {
-      (async () => {
-        try {
-          if (arrival._id) {
-            const response = await api.put(`/arrivals/${arrival._id}`, data);
-            setArrivals(
-              arrivals.map(a => {
-                if (a._id === arrival._id) {
-                  return response.data;
-                }
-                return a;
-              })
-            );
-            toast.success('Registro atualizado com sucesso!');
-          } else {
-            const response = await api.post('arrivals', data);
-            setArrivals([...arrivals, response.data]);
-            toast.success('Registro criado com sucesso!');
-          }
-          setArrival({});
-          setShowArrivalModal(false);
-        } catch (err) {
-          toast.error('Não foi possivel criar o novo registro');
-        }
-      })();
-    },
-    [arrivals, arrival._id]
-  );
+  const [edit, setEdit] = useState({});
+  const [dateStart, setDateStart] = useState(null);
+  const [dateEnd, setDateEnd] = useState(null);
+  const [showArrivalModal, setShowArrivalModal] = useState(false);
 
   useEffect(() => {
     (async () => {
