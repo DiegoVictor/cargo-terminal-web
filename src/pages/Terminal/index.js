@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Table, Spinner, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
-import { toast } from 'react-toastify';
 
 import api from '~/services/api';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
@@ -52,16 +51,16 @@ function Terminal() {
   }, [dateStart, dateEnd]);
 
   return (
-    <Layout>
+    <>
       <Container>
         <div>
-          <Btn
+          <Button
             data-testid="new"
             size="sm"
             onClick={() => setShowArrivalModal(true)}
           >
             Novo
-          </Btn>
+          </Button>
 
           <Right>
             <Row>
@@ -153,12 +152,12 @@ function Terminal() {
                       </Link>
                     </td>
                     <td>
-                      <Btn
+                      <Button
                         data-testid={`arrival_edit_${arrival._id}`}
                         size="sm"
                         type="button"
                         onClick={() => {
-                          setArrival({
+                          setEdit({
                             _id: arrival._id,
                             filled: arrival.filled ? 1 : 0,
                             driver_id: arrival.driver._id,
@@ -176,7 +175,7 @@ function Terminal() {
                         }}
                       >
                         Editar
-                      </Btn>
+                      </Button>
                     </td>
                   </tr>
                 ))}
