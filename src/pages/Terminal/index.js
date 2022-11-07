@@ -110,7 +110,7 @@ function Terminal() {
               </tr>
             ) : (
               <>
-                {arrivals.map(arrival => (
+                {arrivals.map((arrival) => (
                   <tr
                     key={`arrival_${arrival._id}`}
                     data-testid={`arrival_${arrival._id}`}
