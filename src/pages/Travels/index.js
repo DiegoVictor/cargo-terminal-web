@@ -8,7 +8,7 @@ import Description from '~/components/Description';
 import { Container, Center } from './styles';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 
-export default function Travels() {
+function Travel() {
   const [travels, setTravels] = useState([]);
   const [loading, setLoading] = useState(true);
   const google_map_url = '//www.google.com.br/maps/place/';
@@ -83,3 +83,5 @@ export default function Travels() {
     </Layout>
   );
 }
+
+export default Travel;
