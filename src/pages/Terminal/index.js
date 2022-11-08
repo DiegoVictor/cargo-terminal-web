@@ -5,10 +5,6 @@ import DatePicker from 'react-datepicker';
 
 import api from '~/services/api';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
-import Layout from '~/components/Layout';
-import Select from '~/components/Select';
-import Input from '~/components/Input';
-import Modal from '~/components/Modal';
 import Description from '~/components/Description';
 import { Container, Center, Right } from './styles';
 
