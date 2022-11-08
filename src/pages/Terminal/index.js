@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import api from '~/services/api';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 import Description from '~/components/Description';
+import Form from './Modals/ArrivalForm';
 import { Container, Center, Right } from './styles';
 
 function Terminal() {
@@ -179,119 +180,38 @@ function Terminal() {
             )}
           </tbody>
         </Table>
-
-        <Modal
-          show={show_arrival_modal}
-          title="Terminal"
-          onHide={() => setShowArrivalModal(false)}
-        >
-          <Form
-            schema={schema}
-            initialData={arrival}
-            onSubmit={handleTerminalForm}
-          >
-            <Frm.Group>
-              <Frm.Label>Motorista</Frm.Label>
-              <Select
-                className="form-control"
-                name="driver_id"
-                placeholder="Motorista"
-              >
-                {drivers.map(driver => (
-                  <option key={driver._id} value={driver._id}>
-                    {driver.name}
-                  </option>
-                ))}
-              </Select>
-            </Frm.Group>
-
-            <Frm.Group>
-              <Frm.Label>Veículo</Frm.Label>
-              <Select
-                className="form-control"
-                name="vehicle_id"
-                placeholder="Veículo"
-              >
-                {vehicles.map(vehicle => (
-                  <option key={vehicle._id} value={vehicle._id}>
-                    {vehicle.model} ({VehicleTypeTitle(vehicle.type)})
-                  </option>
-                ))}
-              </Select>
-            </Frm.Group>
-
-            <Frm.Group>
-              <Frm.Label>Carregado</Frm.Label>
-              <Select
-                className="form-control"
-                name="filled"
-                placeholder="Carregado"
-              >
-                <option value="0">Não</option>
-                <option value="1">Sim</option>
-              </Select>
-            </Frm.Group>
-
-            <Frm.Group>
-              <Frm.Label>Origem</Frm.Label>
-              <Row>
-                <Col>
-                  <Frm.Label>Latidute</Frm.Label>
-                  <Input
-                    className="form-control"
-                    name="origin[latitude]"
-                    data-testid="latitude_origin"
-                  />
-                </Col>
-                <Col>
-                  <Frm.Label>Longitude</Frm.Label>
-                  <Input
-                    className="form-control"
-                    name="origin[longitude]"
-                    data-testid="longitude_origin"
-                  />
-                </Col>
-              </Row>
-            </Frm.Group>
-
-            <Frm.Group>
-              <Frm.Label>Destino</Frm.Label>
-              <Row>
-                <Col>
-                  <Frm.Label>Latidute</Frm.Label>
-                  <Input
-                    className="form-control"
-                    name="destination[latitude]"
-                    data-testid="latitude_destination"
-                  />
-                </Col>
-                <Col>
-                  <Frm.Label>Longitude</Frm.Label>
-                  <Input
-                    className="form-control"
-                    name="destination[longitude]"
-                    data-testid="longitude_destination"
-                  />
-                </Col>
-              </Row>
-            </Frm.Group>
-
-            <BtnGroup>
-              <Btn
-                data-testid="cancel"
-                variant="secondary"
-                onClick={() => setShowArrivalModal(false)}
-              >
-                Cancelar
-              </Btn>
-              <Btn data-testid="submit" type="submit">
-                Enviar
-              </Btn>
-            </BtnGroup>
-          </Form>
-        </Modal>
       </Container>
-    </Layout>
+      <Form
+        show={showArrivalModal}
+        arrival={edit}
+        drivers={drivers}
+        vehicles={vehicles}
+        cancel={() => setShowArrivalModal(false)}
+        save={(arrival) => {
+          setShowArrivalModal(false);
+          setEdit({});
+
+          if (arrivals.length > 0) {
+            const arrivalIndex = arrivals.findIndex(
+              ({ _id }) => _id === arrival._id
+            );
+            if (arrivalIndex > -1) {
+              setArrivals(
+                arrivals.map((a) => {
+                  if (a._id === arrival._id) {
+                    return arrival;
+                  }
+                  return a;
+                })
+              );
+              return;
+            }
+          }
+
+          setArrivals([...arrivals, arrival]);
+        }}
+      />
+    </>
   );
 }
 
