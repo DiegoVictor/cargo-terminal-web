@@ -2,10 +2,8 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Spinner } from 'react-bootstrap';
 
-import Layout from '~/components/Layout';
 import api from '~/services/api';
 import Description from '~/components/Description';
-import { Container, Center } from './styles';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 
 function Travel() {
