@@ -10,7 +10,7 @@ import { Container, Center } from './styles';
 function Travel() {
   const [travels, setTravels] = useState([]);
   const [loading, setLoading] = useState(true);
-  const google_map_url = '//www.google.com.br/maps/place/';
+  const googleMapUrl = '//www.google.com.br/maps/place/';
 
   useEffect(() => {
     (async () => {
