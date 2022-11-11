@@ -19,13 +19,7 @@ import Description from '~/components/Description';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 import Modal from '~/components/Modal';
 
-const schema = Yup.object().shape({
-  model: Yup.string().required(),
-  type: Yup.string().required(),
-});
-
-export default function Vehicles() {
-  const [vehicle, setVehicle] = useState(null);
+function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -173,3 +167,5 @@ export default function Vehicles() {
     </Layout>
   );
 }
+
+export default Vehicles;
