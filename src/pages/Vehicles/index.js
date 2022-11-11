@@ -92,51 +92,27 @@ function Vehicles() {
             )}
           </tbody>
         </Table>
-
-        <Modal show={!!vehicle} onHide={() => setVehicle(null)} title="Veículo">
-          {vehicle && (
-            <Form
-              initialData={vehicle}
-              schema={schema}
-              onSubmit={handleVehicleForm}
-            >
-              <Frm.Group>
-                <Frm.Label>Modelo</Frm.Label>
-                <Input
-                  className="form-control"
-                  name="model"
-                  placeholder="Modelo"
-                />
-              </Frm.Group>
-
-              <Frm.Group>
-                <Frm.Label>Tipo</Frm.Label>
-                <Select className="form-control" name="type" placeholder="Tipo">
-                  <option value="1">Caminhão 3/4</option>
-                  <option value="2">Caminhão Toco</option>
-                  <option value="3">Caminhão ​Truck</option>
-                  <option value="4">Carreta Simples</option>
-                  <option value="5">Carreta Eixo Extendido</option>
-                </Select>
-              </Frm.Group>
-
-              <BtnGroup>
-                <Btn
-                  data-testid="cancel"
-                  variant="secondary"
-                  onClick={() => setVehicle(false)}
-                >
-                  Cancelar
-                </Btn>
-                <Btn data-testid="submit" type="submit">
-                  Enviar
-                </Btn>
-              </BtnGroup>
-            </Form>
-          )}
-        </Modal>
       </Container>
-    </Layout>
+      <Form
+        vehicle={edit}
+        cancel={() => setEdit(null)}
+        save={(vehicle) => {
+          if (vehicle._id) {
+            setVehicles(
+              vehicles.map((v) => {
+                if (v._id === vehicle._id) {
+                  return vehicle;
+                }
+                return v;
+              })
+            );
+          } else {
+            setVehicles([...vehicles, vehicle]);
+          }
+          setEdit(null);
+        }}
+      />
+    </>
   );
 }
 
