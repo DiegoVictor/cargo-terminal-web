@@ -22,35 +22,7 @@ import Modal from '~/components/Modal';
 function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const handleVehicleForm = useCallback(
-    data => {
-      (async () => {
-        try {
-          if (vehicle._id) {
-            await api.put(`/vehicles/${vehicle._id}`, data);
-            setVehicles(
-              vehicles.map(v => {
-                if (v._id === vehicle._id) {
-                  return data;
-                }
-                return v;
-              })
-            );
-            toast.success('Veículo atualizado com sucesso!');
-          } else {
-            await api.post('vehicles', data);
-            setVehicles([...vehicles, data]);
-            toast.success('Veículo criado com sucesso!');
-          }
-          await setVehicle(null);
-        } catch (err) {
-          toast.error('Não foi possivel criar o novo veículo');
-        }
-      })();
-    },
-    [vehicle, vehicles]
-  );
+  const [edit, setEdit] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -62,10 +34,10 @@ function Vehicles() {
   }, []);
 
   return (
-    <Layout>
+    <>
       <Container>
         <div>
-          <Btn data-testid="new" size="sm" onClick={() => setVehicle({})}>
+          <Btn data-testid="new" size="sm" onClick={() => setEdit({})}>
             Novo
           </Btn>
         </div>
@@ -108,7 +80,7 @@ function Vehicles() {
                         size="sm"
                         type="button"
                         onClick={() => {
-                          setVehicle(vehicle);
+                          setEdit(vehicle);
                         }}
                       >
                         Editar
