@@ -1,23 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Form } from '@unform/web';
-import * as Yup from 'yup';
-import {
-  Table,
-  Spinner,
-  Button as Btn,
-  ButtonGroup as BtnGroup,
-  Form as Frm,
-} from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import Layout from '~/components/Layout';
+import React, { useState, useEffect } from 'react';
+import { Table, Spinner, Button as Btn } from 'react-bootstrap';
 
-import { Container, Center } from './styles';
 import api from '~/services/api';
-import Input from '~/components/Input';
-import Select from '~/components/Select';
 import Description from '~/components/Description';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
-import Modal from '~/components/Modal';
+import Form from '~/pages/Vehicles/Modals/VehicleForm';
+import { Container, Center } from './styles';
 
 function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
