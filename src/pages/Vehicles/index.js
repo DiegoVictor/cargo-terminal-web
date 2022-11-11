@@ -60,7 +60,7 @@ function Vehicles() {
               </tr>
             ) : (
               <>
-                {vehicles.map(vehicle => (
+                {vehicles.map((vehicle) => (
                   <tr key={`vehicle_${vehicle._id}`}>
                     <td>
                       <Description>Modelo</Description>
