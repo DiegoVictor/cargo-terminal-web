@@ -126,6 +126,32 @@ describe('Vehicles page', () => {
     expect(getByText(VehicleTypeTitle(newVehicle.type))).toBeInTheDocument();
   });
 
+  it('should be able to cancel the vehicle edition', async () => {
+    const vehicle = await factory.attrs('Vehicle', { type: 1 });
+
+    apiMock.onGet('vehicles').reply(200, [vehicle]);
+
+    let getByTestId;
+    let queryByTestId;
+    await act(async () => {
+      const component = render(
+        <Router history={history}>
+          <Vehicles />
+        </Router>
+      );
+
+      getByTestId = component.getByTestId;
+      queryByTestId = component.queryByTestId;
+    });
+
+    fireEvent.click(getByTestId(`vehicle_${vehicle._id}`));
+    expect(getByTestId('form')).toBeInTheDocument();
+
+    fireEvent.click(getByTestId('cancel'));
+
+    expect(queryByTestId('form')).not.toBeInTheDocument();
+  });
+
   it('should not be able to edit a vehicle', async () => {
     const [newVehicle, vehicle, ...rest] = await factory.attrsMany(
       'Vehicle',

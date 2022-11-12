@@ -51,6 +51,7 @@ function VehicleForm({ vehicle, save, cancel }) {
           initialData={vehicle}
           schema={schema}
           onSubmit={handleVehicleForm}
+          data-testid="form"
         >
           <Frm.Group>
             <Frm.Label>Modelo</Frm.Label>
