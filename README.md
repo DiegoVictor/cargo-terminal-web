@@ -21,7 +21,17 @@ Project built to manage vehicles that arrive at a terminal, it permits users to 
 * [Running the tests](#running-the-tests)
   * [Coverage Report](#coverage-report)
 
-# Install
+# Screenshots
+Click to expand.<br>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/terminal.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/terminal-edit.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/travels.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/drivers.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/driver-edit.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/driver-disable.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/vehicles.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/vehicle-edit.png" width="49%"/>
+
 ```
 $ yarn
 ```
