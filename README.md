@@ -11,8 +11,15 @@
 
 Project built to manage vehicles that arrive at a terminal, it permits users to register drivers, vehicles and drivers' origins and destinations. All the resources used by this application comes from its [`API`](https://github.com/DiegoVictor/cargo-terminal-api).
 
-# About
-Project built to manage vehicles that arrive at a terminal, it permits users to register drivers, vehicles and drivers' origins and destinations.
+## Table of Contents
+* [Screenshots](#screenshots)
+* [Installing](#installing)
+  * [Configuring](#configuring)
+    * [.env](#env)
+    * [API](#api)
+* [Usage](#usage)
+* [Running the tests](#running-the-tests)
+  * [Coverage Report](#coverage-report)
 
 # Install
 ```
