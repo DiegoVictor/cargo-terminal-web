@@ -32,9 +32,16 @@ Click to expand.<br>
 <img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/vehicles.png" width="49%"/>
 <img src="https://raw.githubusercontent.com/DiegoVictor/cargo-terminal-web/main/screenshots/vehicle-edit.png" width="49%"/>
 
+# Installing
+Easy peasy lemon squeezy:
 ```
 $ yarn
 ```
+Or:
+```
+$ npm install
+```
+> Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
 # Dependencies
 Was installed and configured the `eslint` and `prettier` to keep the code clean and patterned.
