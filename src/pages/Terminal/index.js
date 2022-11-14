@@ -156,7 +156,7 @@ function Terminal() {
                         onClick={() => {
                           setEdit({
                             _id: arrival._id,
-                            filled: arrival.filled ? 1 : 0,
+                            filled: Number(arrival.filled),
                             driver_id: arrival.driver._id,
                             vehicle_id: arrival.vehicle._id,
                             origin: {

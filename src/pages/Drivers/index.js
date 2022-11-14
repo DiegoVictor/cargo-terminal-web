@@ -50,7 +50,7 @@ function Drivers() {
     (async () => {
       setLoading(true);
       const { data } = await api.get('drivers', {
-        params: { active: active ? 1 : 0, vehicle: vehicle ? 1 : 0 },
+        params: { active: Number(active), vehicle: Number(vehicle) },
       });
       setDrivers(data);
       setLoading(false);
