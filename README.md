@@ -43,16 +43,18 @@ $ npm install
 ```
 > Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
-# Dependencies
-Was installed and configured the `eslint` and `prettier` to keep the code clean and patterned.
+## Configuring
+Configure your environment variables and remember to start the [API](https://github.com/DiegoVictor/cargo-terminal-api) before to start this app.
 
-# .env
-Rename the `.env.example` to `.env` then just update with yours settings.
+### .env
+In this file you may configure the API's url. Rename the `.env.example` in the root directory to `.env` then just update with your settings.
 
-# API
-Start the server in the [`api`](https://github.com/DiegoVictor/truck-system/tree/master/api) folder (see its README for more information). If any change in the api's port or host was made remember to update the .env too.
+key|description|default
+---|---|---
+REACT_APP_API_URL|API's url|`http://localhost:3333`
 
-# Start up
+### API
+Start the [API](https://github.com/DiegoVictor/cargo-terminal-api) (see its README for more information). In case of any change in the API's `port` or `host` remember to update the [`.env`](#env) too.
 ```
 $ yarn start
 ```
