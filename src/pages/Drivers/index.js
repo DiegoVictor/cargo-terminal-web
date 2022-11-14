@@ -195,7 +195,7 @@ function Drivers() {
 
       <InactivateDriver
         driver={disableDriver}
-        cancel={() => confirmDisableDriver(false)}
+        cancel={() => confirmDisableDriver(null)}
         handleDisableDriver={handleDisableDriver}
       />
 
