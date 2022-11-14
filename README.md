@@ -55,8 +55,15 @@ REACT_APP_API_URL|API's url|`http://localhost:3333`
 
 ### API
 Start the [API](https://github.com/DiegoVictor/cargo-terminal-api) (see its README for more information). In case of any change in the API's `port` or `host` remember to update the [`.env`](#env) too.
+
+# Usage
+To start the app run:
 ```
 $ yarn start
+```
+Or:
+```
+npm run start
 ```
 
 # Tests
