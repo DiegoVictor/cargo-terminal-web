@@ -66,8 +66,15 @@ Or:
 npm run start
 ```
 
-# Tests
+# Running the tests
+[Jest](https://jestjs.io) was the choice to test the app, to run:
 ```
 $ yarn test
 ```
-> And `yarn coverage` to run tests with coverage
+Or:
+```
+$ npm run test
+```
+
+## Coverage Report
+You can see the coverage report inside `tests/coverage`. They are automatically created after the tests run.
