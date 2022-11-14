@@ -25,6 +25,7 @@ function Drivers() {
   const [active, setActive] = useState(true);
   const [vehicle, setVehicle] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [toggle] = useState([1]);
 
   const handleDisableDriver = useCallback(() => {
     (async () => {
@@ -79,7 +80,7 @@ function Drivers() {
 
         <Right>
           <ButtonToolbar>
-            <ToggleButtonGroup type="checkbox" defaultValue={[1]}>
+            <ToggleButtonGroup type="checkbox" defaultValue={toggle} size="sm">
               <ToggleButton
                 data-testid="active"
                 onClick={() => {
@@ -87,19 +88,18 @@ function Drivers() {
                     setActive(!active);
                   }
                 }}
-                size="sm"
                 variant="outline-primary"
                 value={1}
               >
                 Ativos
               </ToggleButton>
               <ToggleButton
+                data-testid="with-vehicle"
                 onClick={() => {
                   if (!loading) {
                     setVehicle(!vehicle);
                   }
                 }}
-                size="sm"
                 variant="outline-primary"
                 value={2}
               >
