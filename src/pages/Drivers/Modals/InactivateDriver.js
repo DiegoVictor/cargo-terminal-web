@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button as Btn, ButtonGroup as BtnGroup } from 'react-bootstrap';
+import { Button as Btn } from 'react-bootstrap';
 
 import Modal from '~/components/Modal';
+import { BtnGroup } from './styles';
 
 function InactivateDriver({ driver, cancel, handleDisableDriver }) {
   return (
@@ -10,7 +11,7 @@ function InactivateDriver({ driver, cancel, handleDisableDriver }) {
       {driver && `Deseja realmente desativar o(a) motorista ${driver.name}?`}
 
       <BtnGroup>
-        <Btn variant="secondary" onClick={cancel}>
+        <Btn variant="secondary" onClick={cancel} data-testid="cancel">
           Cancelar
         </Btn>
         <Btn onClick={handleDisableDriver} data-testid="confirm">
