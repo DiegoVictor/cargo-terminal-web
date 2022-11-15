@@ -31,7 +31,7 @@ InactivateDriver.propTypes = {
 };
 
 InactivateDriver.defaultProps = {
-  driver: null,
+  driver: { name: '' },
 };
 
 export default InactivateDriver;
