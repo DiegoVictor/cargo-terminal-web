@@ -44,96 +44,107 @@ function DriverForm({ vehicles, driver, show, cancel, save }) {
 
   return (
     <Modal title="Motorista" show={show} onHide={cancel}>
-      <Form initialData={driver} schema={schema} onSubmit={handleDriverForm}>
-        <Frm.Group>
-          <Frm.Label>Nome</Frm.Label>
-          <Input className="form-control" name="name" placeholder="Nome" />
-        </Frm.Group>
+      {show && (
+        <Form
+          initialData={driver}
+          schema={schema}
+          onSubmit={handleDriverForm}
+          data-testid="form"
+        >
+          <Frm.Group>
+            <Frm.Label>Nome</Frm.Label>
+            <Input className="form-control" name="name" placeholder="Nome" />
+          </Frm.Group>
 
-        <Frm.Group>
-          <Frm.Label>CPF</Frm.Label>
-          <Input
-            className="form-control"
-            mask="999.999.999-99"
-            name="cpf"
-            placeholder="CPF"
-          />
-        </Frm.Group>
+          <Frm.Group>
+            <Frm.Label>CPF</Frm.Label>
+            <Input
+              className="form-control"
+              mask="999.999.999-99"
+              name="cpf"
+              placeholder="CPF"
+            />
+          </Frm.Group>
 
-        <Frm.Group>
-          <Frm.Label>Telefone</Frm.Label>
-          <Input
-            className="form-control"
-            mask="(99) 99999-9999"
-            name="phone"
-            placeholder="Telefone"
-          />
-        </Frm.Group>
+          <Frm.Group>
+            <Frm.Label>Telefone</Frm.Label>
+            <Input
+              className="form-control"
+              mask="(99) 99999-9999"
+              name="phone"
+              placeholder="Telefone"
+            />
+          </Frm.Group>
 
-        <Frm.Group>
-          <Frm.Label>Data de Nascimento</Frm.Label>
-          <Input
-            className="form-control"
-            mask="99/99/9999"
-            name="birthday"
-            placeholder="Data de Nascimento"
-          />
-        </Frm.Group>
+          <Frm.Group>
+            <Frm.Label>Data de Nascimento</Frm.Label>
+            <Input
+              className="form-control"
+              mask="99/99/9999"
+              name="birthday"
+              placeholder="Data de Nascimento"
+            />
+          </Frm.Group>
 
-        <Frm.Group>
-          <Frm.Label>Gênero</Frm.Label>
-          <Select className="form-control" name="gender" placeholder="Gênero">
-            <option value="F">Feminino</option>
-            <option value="M">Masculino</option>
-            <option value="O">Outro</option>
-          </Select>
-        </Frm.Group>
+          <Frm.Group>
+            <Frm.Label>Gênero</Frm.Label>
+            <Select className="form-control" name="gender" placeholder="Gênero">
+              <option value="F">Feminino</option>
+              <option value="M">Masculino</option>
+              <option value="O">Outro</option>
+            </Select>
+          </Frm.Group>
 
-        <Frm.Group>
-          <Frm.Label>CNH</Frm.Label>
-          <Input
-            className="form-control"
-            mask="99999999999"
-            name="cnh_number"
-            placeholder="CNH"
-          />
-        </Frm.Group>
+          <Frm.Group>
+            <Frm.Label>CNH</Frm.Label>
+            <Input
+              className="form-control"
+              mask="99999999999"
+              name="cnh_number"
+              placeholder="CNH"
+            />
+          </Frm.Group>
 
-        <Frm.Group>
-          <Frm.Label>Tipo de CNH</Frm.Label>
-          <Select
-            className="form-control"
-            name="cnh_type"
-            placeholder="Tipo de CNH"
-          >
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-            <option>D</option>
-            <option>E</option>
-          </Select>
-        </Frm.Group>
+          <Frm.Group>
+            <Frm.Label>Tipo de CNH</Frm.Label>
+            <Select
+              className="form-control"
+              name="cnh_type"
+              placeholder="Tipo de CNH"
+            >
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>D</option>
+              <option>E</option>
+            </Select>
+          </Frm.Group>
 
-        <Frm.Group>
-          <Frm.Label>Veiculo</Frm.Label>
-          <Select className="form-control" name="vehicle" placeholder="Veículo">
-            {vehicles.map((vehicle) => (
-              <option key={vehicle._id} value={vehicle._id}>
-                {vehicle.model} ({VehicleTypeTitle(vehicle.type)})
-              </option>
-            ))}
-          </Select>
-        </Frm.Group>
+          <Frm.Group>
+            <Frm.Label>Veiculo</Frm.Label>
+            <Select
+              className="form-control"
+              name="vehicle"
+              placeholder="Veículo"
+            >
+              {vehicles.map((vehicle) => (
+                <option key={vehicle._id} value={vehicle._id}>
+                  {vehicle.model} ({VehicleTypeTitle(vehicle.type)})
+                </option>
+              ))}
+            </Select>
+          </Frm.Group>
 
-        <BtnGroup>
-          <Btn variant="secondary" onClick={cancel}>
-            Cancelar
-          </Btn>
-          <Btn data-testid="submit" type="submit">
-            Enviar
-          </Btn>
-        </BtnGroup>
-      </Form>
+          <BtnGroup>
+            <Btn variant="secondary" onClick={cancel} data-testid="cancel">
+              Cancelar
+            </Btn>
+            <Btn data-testid="submit" type="submit">
+              Enviar
+            </Btn>
+          </BtnGroup>
+        </Form>
+
     </Modal>
   );
 }
