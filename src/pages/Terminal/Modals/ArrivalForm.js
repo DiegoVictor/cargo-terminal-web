@@ -1,12 +1,6 @@
 import React, { useCallback } from 'react';
 import { Form } from '@unform/web';
-import {
-  Button as Btn,
-  ButtonGroup as BtnGroup,
-  Form as Frm,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import { Button as Btn, Form as Frm, Row, Col } from 'react-bootstrap';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
@@ -16,6 +10,7 @@ import Input from '~/components/Input';
 import Modal from '~/components/Modal';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 import api from '~/services/api';
+import { BtnGroup, FormGroup } from './styles';
 
 const schema = Yup.object().shape({
   filled: Yup.string().required(),
