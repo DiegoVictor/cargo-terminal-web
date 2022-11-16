@@ -16,6 +16,28 @@ const apiMock = new MockAdapter(api);
 jest.mock('react-toastify');
 toast.error = jest.fn();
 
+jest.mock('react-datepicker', () => {
+  return {
+    __esModule: true,
+    // eslint-disable-next-line react/prop-types
+    default: function DatePicker({
+      className,
+      onChange,
+      'data-testid': testId,
+    }) {
+      return (
+        <input
+          name="fake-input"
+          type="text"
+          className={className}
+          data-testid={testId}
+          onChange={onChange}
+        />
+      );
+    },
+  };
+});
+
 describe('Terminal page', () => {
   it('should be able to list all arrivals', async () => {
     const drivers = await factory.attrsMany('Driver', 3);
@@ -78,7 +100,6 @@ describe('Terminal page', () => {
       .reply(200, arrivals);
 
     let getByTestId;
-    let getByPlaceholderText;
     await act(async () => {
       const component = render(
         <Router history={history}>
@@ -86,18 +107,17 @@ describe('Terminal page', () => {
         </Router>
       );
       getByTestId = component.getByTestId;
-      getByPlaceholderText = component.getByPlaceholderText;
     });
 
     await act(async () => {
-      fireEvent.change(getByPlaceholderText('Inicio'), {
-        target: dateStart,
+      fireEvent.change(getByTestId('start'), {
+        target: { value: dateStart },
       });
     });
 
     await act(async () => {
-      fireEvent.change(getByPlaceholderText('Fim'), {
-        target: dateEnd,
+      fireEvent.change(getByTestId('end'), {
+        target: { value: dateEnd },
       });
     });
 
