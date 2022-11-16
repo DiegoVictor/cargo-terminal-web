@@ -144,7 +144,7 @@ function DriverForm({ vehicles, driver, show, cancel, save }) {
             </Btn>
           </BtnGroup>
         </Form>
-
+      )}
     </Modal>
   );
 }
