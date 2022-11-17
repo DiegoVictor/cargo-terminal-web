@@ -361,4 +361,38 @@ describe('Terminal page', () => {
     expect(getByText(newArrival.origin.join(', '))).toBeInTheDocument();
     expect(getByText(newArrival.destination.join(', '))).toBeInTheDocument();
   });
+
+  it('should be able to cancel the vehicle edition', async () => {
+    const driver = await factory.attrs('Driver');
+    const vehicle = await factory.attrs('Vehicle');
+    const arrival = await factory.attrs('Arrival');
+
+    apiMock
+      .onGet('drivers')
+      .reply(200, [driver])
+      .onGet('vehicles')
+      .reply(200, [vehicle])
+      .onGet('arrivals')
+      .reply(200, [arrival]);
+
+    let getByTestId;
+    let queryByTestId;
+    await act(async () => {
+      const component = render(
+        <Router history={history}>
+          <Terminal />
+        </Router>
+      );
+
+      getByTestId = component.getByTestId;
+      queryByTestId = component.queryByTestId;
+    });
+
+    fireEvent.click(getByTestId(`arrival_edit_${arrival._id}`));
+    expect(getByTestId('form')).toBeInTheDocument();
+
+    fireEvent.click(getByTestId('cancel'));
+
+    expect(queryByTestId('form')).not.toBeInTheDocument();
+  });
 });
