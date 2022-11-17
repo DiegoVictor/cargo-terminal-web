@@ -49,6 +49,84 @@ describe('Drivers page', () => {
     });
   });
 
+  it('should be able to list active drivers', async () => {
+    const drivers = await factory.attrsMany('Driver', 3);
+    const vehicles = await factory.attrsMany('Vehicle', 3);
+
+    apiMock
+      .onGet('drivers')
+      .reply(200, [])
+      .onGet('drivers')
+      .reply(200, drivers)
+      .onGet('vehicles')
+      .reply(200, vehicles);
+
+    let getByText;
+    let getByTestId;
+    await act(async () => {
+      const component = render(
+        <Router history={history}>
+          <Drivers />
+        </Router>
+      );
+
+      getByText = component.getByText;
+      getByTestId = component.getByTestId;
+    });
+
+    await act(async () => {
+      fireEvent.click(getByTestId('active'));
+    });
+
+    drivers.forEach((driver) => {
+      Object.keys(driver).forEach((field) => {
+        if (!['_id', 'cnh_type', 'gender', 'vehicle'].includes(field)) {
+          expect(getByText(driver[field])).toBeInTheDocument();
+        }
+      });
+      expect(getByTestId(`driver_cnh_type_${driver._id}`)).toBeInTheDocument();
+    });
+  });
+
+  it('should be able to list drivers with vehicle', async () => {
+    const drivers = await factory.attrsMany('Driver', 3);
+    const vehicles = await factory.attrsMany('Vehicle', 3);
+
+    apiMock
+      .onGet('drivers')
+      .reply(200, [])
+      .onGet('drivers')
+      .reply(200, drivers)
+      .onGet('vehicles')
+      .reply(200, vehicles);
+
+    let getByText;
+    let getByTestId;
+    await act(async () => {
+      const component = render(
+        <Router history={history}>
+          <Drivers />
+        </Router>
+      );
+
+      getByText = component.getByText;
+      getByTestId = component.getByTestId;
+    });
+
+    await act(async () => {
+      fireEvent.click(getByTestId('with-vehicle'));
+    });
+
+    drivers.forEach((driver) => {
+      Object.keys(driver).forEach((field) => {
+        if (!['_id', 'cnh_type', 'gender', 'vehicle'].includes(field)) {
+          expect(getByText(driver[field])).toBeInTheDocument();
+        }
+      });
+      expect(getByTestId(`driver_cnh_type_${driver._id}`)).toBeInTheDocument();
+    });
+  });
+
   it('should be able to disable a driver', async () => {
     const driver = await factory.attrs('Driver');
     const vehicles = await factory.attrsMany('Vehicle', 3);
@@ -82,6 +160,44 @@ describe('Drivers page', () => {
 
     expect(
       queryByTestId(`driver_disable_${driver._id}`)
+    ).not.toBeInTheDocument();
+  });
+
+  it('should be able to cancel the driver disabling', async () => {
+    const driver = await factory.attrs('Driver');
+    const vehicles = await factory.attrsMany('Vehicle', 3);
+
+    apiMock
+      .onGet('drivers')
+      .reply(200, [driver])
+      .onGet('vehicles')
+      .reply(200, vehicles);
+
+    let getByTestId;
+    let getByText;
+    let queryByTestId;
+    await act(async () => {
+      const component = render(
+        <Router history={history}>
+          <Drivers />
+        </Router>
+      );
+
+      getByTestId = component.getByTestId;
+      getByText = component.getByText;
+      queryByTestId = component.queryByTestId;
+    });
+
+    fireEvent.click(getByTestId(`driver_disable_${driver._id}`));
+
+    expect(
+      getByText(`Deseja realmente desativar o(a) motorista ${driver.name}?`)
+    ).toBeInTheDocument();
+
+    fireEvent.click(getByTestId('cancel'));
+
+    expect(
+      queryByTestId(`Deseja realmente desativar o(a) motorista ${driver.name}?`)
     ).not.toBeInTheDocument();
   });
 
@@ -354,5 +470,38 @@ describe('Drivers page', () => {
       }
     });
     expect(getByTestId(`driver_cnh_type_${newDriver._id}`)).toBeInTheDocument();
+  });
+
+  it('should be able to cancel the driver edition', async () => {
+    const [driver, newDriver, ...rest] = await factory.attrsMany('Driver', 3);
+    const vehicle = await factory.attrs('Vehicle');
+
+    newDriver._id = driver._id;
+
+    apiMock
+      .onGet('drivers')
+      .reply(200, [driver, ...rest])
+      .onGet('vehicles')
+      .reply(200, [vehicle]);
+
+    let queryByTestId;
+    let getByTestId;
+    await act(async () => {
+      const component = render(
+        <Router history={history}>
+          <Drivers />
+        </Router>
+      );
+
+      getByTestId = component.getByTestId;
+      queryByTestId = component.queryByTestId;
+    });
+
+    fireEvent.click(getByTestId(`driver_edit_${driver._id}`));
+    expect(getByTestId('form')).toBeInTheDocument();
+
+    fireEvent.click(getByTestId('cancel'));
+
+    expect(queryByTestId('form')).not.toBeInTheDocument();
   });
 });
