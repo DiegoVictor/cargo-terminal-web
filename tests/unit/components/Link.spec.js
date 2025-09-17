@@ -8,7 +8,7 @@ import Link from '~/components/Link';
 
 describe('Link component', () => {
   it('should be able to mark the link as active', () => {
-    const linkLabel = faker.random.word();
+    const linkLabel = faker.lorem.word();
     const { container } = render(
       <Router history={history}>
         <Link to="/">{linkLabel}</Link>

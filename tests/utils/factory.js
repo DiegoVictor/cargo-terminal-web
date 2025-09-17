@@ -4,14 +4,13 @@ import { faker } from '@faker-js/faker';
 factory.define('Driver', {}, async () => {
   const vehicle = await factory.attrs('Vehicle');
   return {
-    _id: faker.datatype.uuid,
-    name: faker.name.firstName,
-    cpf: () =>
-      String(faker.datatype.number({ min: 11111111111, max: 99999999999 })),
+    _id: faker.string.uuid,
+    name: faker.person.firstName,
+    cpf: () => String(faker.number.int({ min: 11111111111, max: 99999999999 })),
     phone: faker.phone.number,
     birthday: () => faker.date.past().toLocaleString(),
     cnh_number: () =>
-      String(faker.datatype.number({ min: 11111111111, max: 99999999999 })),
+      String(faker.number.int({ min: 11111111111, max: 99999999999 })),
     cnh_type: () => faker.helpers.arrayElement(['A', 'B', 'C', 'D', 'E']),
     gender: () => faker.helpers.arrayElement(['F', 'M', 'O']),
     vehicle,
@@ -22,9 +21,9 @@ factory.define(
   'Vehicle',
   {},
   {
-    _id: faker.datatype.uuid,
+    _id: faker.string.uuid,
     model: () =>
-      `${faker.vehicle.model()} ${faker.datatype.number({
+      `${faker.vehicle.model()} ${faker.number.int({
         min: 2000,
         max: 3000,
       })}`,
@@ -36,8 +35,10 @@ factory.define(
   'Travel',
   {},
   {
-    origins: () => [[faker.address.longitude(), faker.address.latitude()]],
-    destinations: () => [[faker.address.longitude(), faker.address.latitude()]],
+    origins: () => [[faker.location.longitude(), faker.location.latitude()]],
+    destinations: () => [
+      [faker.location.longitude(), faker.location.latitude()],
+    ],
     type: () => faker.helpers.arrayElement([1, 2, 3, 4, 5]),
   }
 );
@@ -47,12 +48,12 @@ factory.define('Arrival', {}, async () => {
   const vehicle = await factory.attrs('Vehicle');
 
   return {
-    _id: faker.datatype.uuid,
+    _id: faker.string.uuid,
     filled: faker.datatype.boolean,
     driver,
     vehicle,
-    origin: () => [faker.address.longitude(), faker.address.latitude()],
-    destination: () => [faker.address.longitude(), faker.address.latitude()],
+    origin: () => [faker.location.longitude(), faker.location.latitude()],
+    destination: () => [faker.location.longitude(), faker.location.latitude()],
     createdAt: faker.date.past,
   };
 });
