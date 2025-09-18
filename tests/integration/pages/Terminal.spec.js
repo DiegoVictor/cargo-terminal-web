@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import { Router } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
@@ -19,7 +19,6 @@ toast.error = jest.fn();
 jest.mock('react-datepicker', () => {
   return {
     __esModule: true,
-    // eslint-disable-next-line react/prop-types
     default: function DatePicker({
       className,
       onChange,
@@ -52,17 +51,18 @@ describe('Terminal page', () => {
       .onGet('arrivals')
       .reply(200, arrivals);
 
-    let getByTestId;
-    let getByText;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Terminal />
-        </Router>
-      );
-      getByTestId = component.getByTestId;
-      getByText = component.getByText;
-    });
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Terminal />
+      </Router>
+    );
+
+    const [
+      {
+        driver: { name },
+      },
+    ] = arrivals;
+    await waitFor(() => getByText(name));
 
     arrivals.forEach((arrival) => {
       expect(getByText(arrival.driver.name)).toBeInTheDocument();
@@ -99,15 +99,18 @@ describe('Terminal page', () => {
       .onGet('arrivals')
       .reply(200, arrivals);
 
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Terminal />
-        </Router>
-      );
-      getByTestId = component.getByTestId;
-    });
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Terminal />
+      </Router>
+    );
+
+    const [
+      {
+        driver: { name },
+      },
+    ] = arrivals;
+    await waitFor(() => getByText(name));
 
     await act(async () => {
       fireEvent.change(getByTestId('start'), {
@@ -139,19 +142,13 @@ describe('Terminal page', () => {
       .onPost('arrivals')
       .reply(200, { ...newArrival, driver, vehicle });
 
-    let getByText;
-    let getByTestId;
-    let getByPlaceholderText;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Terminal />
-        </Router>
-      );
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-      getByPlaceholderText = component.getByPlaceholderText;
-    });
+    const { getByText, getByTestId, getByPlaceholderText } = render(
+      <Router history={history}>
+        <Terminal />
+      </Router>
+    );
+
+    await waitFor(() => getByText(arrival.driver.name));
 
     fireEvent.click(getByTestId('new'));
     fireEvent.change(getByPlaceholderText('Motorista'), {
@@ -220,17 +217,13 @@ describe('Terminal page', () => {
       .onPost('arrivals')
       .reply(400);
 
-    let getByTestId;
-    let getByPlaceholderText;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Terminal />
-        </Router>
-      );
-      getByTestId = component.getByTestId;
-      getByPlaceholderText = component.getByPlaceholderText;
-    });
+    const { getByText, getByTestId, getByPlaceholderText } = render(
+      <Router history={history}>
+        <Terminal />
+      </Router>
+    );
+
+    await waitFor(() => getByText(arrival.driver.name));
 
     fireEvent.click(getByTestId('new'));
     fireEvent.change(getByPlaceholderText('Motorista'), {
@@ -296,19 +289,13 @@ describe('Terminal page', () => {
       .onPut(`/arrivals/${arrival._id}`)
       .reply(200, { ...newArrival, driver, vehicle, _id: arrival._id });
 
-    let getByText;
-    let getByTestId;
-    let getByPlaceholderText;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Terminal />
-        </Router>
-      );
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-      getByPlaceholderText = component.getByPlaceholderText;
-    });
+    const { getByText, getByTestId, getByPlaceholderText } = render(
+      <Router history={history}>
+        <Terminal />
+      </Router>
+    );
+
+    await waitFor(() => getByText(arrival.driver.name));
 
     fireEvent.click(getByTestId(`arrival_edit_${arrival._id}`));
     fireEvent.change(getByPlaceholderText('Motorista'), {
@@ -375,18 +362,13 @@ describe('Terminal page', () => {
       .onGet('arrivals')
       .reply(200, [arrival]);
 
-    let getByTestId;
-    let queryByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Terminal />
-        </Router>
-      );
+    const { getByText, getByTestId, queryByTestId } = render(
+      <Router history={history}>
+        <Terminal />
+      </Router>
+    );
 
-      getByTestId = component.getByTestId;
-      queryByTestId = component.queryByTestId;
-    });
+    await waitFor(() => getByText(arrival.driver.name));
 
     fireEvent.click(getByTestId(`arrival_edit_${arrival._id}`));
     expect(getByTestId('form')).toBeInTheDocument();
