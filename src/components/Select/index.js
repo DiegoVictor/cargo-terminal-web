@@ -1,23 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useField } from '@unform/core';
 
-export default function Select({ name, children, ...rest }) {
-  const inputRef = useRef(null);
-  const { fieldName, defaultValue = '', registerField } = useField(name);
-
-  useEffect(() => {
-    registerField({
-      name: fieldName,
-      ref: inputRef.current,
-      path: 'value',
-    });
-  }, [fieldName, registerField]);
-
+export default function Select({ name, children, error, ...rest }) {
   return (
-    <select ref={inputRef} defaultValue={defaultValue} {...rest}>
-      {children}
-    </select>
+    <>
+      <select {...rest}>{children}</select>
+      {error && <span>{error}</span>}
+    </>
   );
 }
 
@@ -27,4 +16,9 @@ Select.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
+  error: PropTypes.string,
+};
+
+Select.defaultProps = {
+  error: null,
 };
