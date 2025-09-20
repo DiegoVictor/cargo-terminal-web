@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
-import { Form } from '@unform/web';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { Button as Btn, Form as Frm } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import api from '~/services/api';
@@ -23,94 +22,153 @@ const schema = Yup.object().shape({
 });
 
 function DriverForm({ vehicles, driver, show, cancel, save }) {
-  const handleDriverForm = useCallback(
-    async (data) => {
-      try {
-        if (driver._id) {
-          const response = await api.put(`/drivers/${driver._id}`, data);
-          save(response.data);
-          toast.success('Motorista atualizado com sucesso!');
-        } else {
-          const response = await api.post('drivers', data);
-          save(response.data);
-          toast.success('Motorista criado com sucesso!');
-        }
-      } catch (err) {
+  const [errors, setErrors] = useState({});
+  const [selectedGender, setSelectedGender] = useState(driver?.gender ?? 'F');
+  const [selectedCnhType, setSelectedCnhType] = useState(
+    driver?.cnh_type ?? 'A'
+  );
+  const [selectedVehicleId, setSelectedVehicleId] = useState(
+    driver?.vehicle ?? ''
+  );
+
+  const send = async (data) => {
+    if (data._id) {
+      return api.put(`/drivers/${data._id}`, data);
+    }
+
+    return api.post('drivers', data);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setErrors({});
+
+    try {
+      const formData = new FormData(event.target);
+      const { name, cpf, phone, birthday, cnh_number } = Object.fromEntries(
+        formData.entries()
+      );
+
+      const data = {
+        _id: driver?._id,
+        name,
+        cpf,
+        phone,
+        birthday,
+        cnh_number,
+        gender: selectedGender,
+        cnh_type: selectedCnhType,
+        vehicle: selectedVehicleId,
+      };
+      await schema.validate(data, { abortEarly: false });
+
+      const response = await send(data);
+
+      save(response.data);
+      toast.success('Motorista atualizado/criado com sucesso!');
+
+      setSelectedGender('F');
+      setSelectedCnhType('A');
+      setSelectedVehicleId('');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+
+        setErrors(validationErrors);
+      } else {
         toast.error('Não foi possivel criar o novo motorista');
       }
-    },
-    [driver._id, save]
-  );
+    }
+  };
 
   return (
     <Modal title="Motorista" show={show} onHide={cancel}>
       {show && (
-        <Form
-          initialData={driver}
-          schema={schema}
-          onSubmit={handleDriverForm}
-          data-testid="form"
-        >
-          <Frm.Group>
-            <Frm.Label>Nome</Frm.Label>
-            <Input className="form-control" name="name" placeholder="Nome" />
-          </Frm.Group>
+        <form onSubmit={handleSubmit} data-testid="form">
+          <Form.Group>
+            <Form.Label>Nome</Form.Label>
+            <Input
+              className="form-control"
+              name="name"
+              placeholder="Nome"
+              error={errors.name}
+            />
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>CPF</Frm.Label>
+          <Form.Group>
+            <Form.Label>CPF</Form.Label>
             <Input
               className="form-control"
               mask="999.999.999-99"
               name="cpf"
               placeholder="CPF"
+              error={errors.cpf}
             />
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Telefone</Frm.Label>
+          <Form.Group>
+            <Form.Label>Telefone</Form.Label>
             <Input
               className="form-control"
               mask="(99) 99999-9999"
               name="phone"
               placeholder="Telefone"
+              error={errors.phone}
             />
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Data de Nascimento</Frm.Label>
+          <Form.Group>
+            <Form.Label>Data de Nascimento</Form.Label>
             <Input
               className="form-control"
               mask="99/99/9999"
               name="birthday"
               placeholder="Data de Nascimento"
+              error={errors.birthday}
             />
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Gênero</Frm.Label>
-            <Select className="form-control" name="gender" placeholder="Gênero">
+          <Form.Group>
+            <Form.Label>Gênero</Form.Label>
+            <Select
+              className="form-control"
+              name="gender"
+              placeholder="Gênero"
+              value={selectedGender}
+              onChange={(e) => setSelectedGender(e.target.value)}
+              error={errors.gender}
+            >
               <option value="F">Feminino</option>
               <option value="M">Masculino</option>
               <option value="O">Outro</option>
             </Select>
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>CNH</Frm.Label>
+          <Form.Group>
+            <Form.Label>CNH</Form.Label>
             <Input
               className="form-control"
               mask="99999999999"
               name="cnh_number"
               placeholder="CNH"
+              error={errors.cnh_number}
             />
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Tipo de CNH</Frm.Label>
+          <Form.Group>
+            <Form.Label>Tipo de CNH</Form.Label>
             <Select
               className="form-control"
               name="cnh_type"
               placeholder="Tipo de CNH"
+              value={selectedCnhType}
+              onChange={(e) => setSelectedCnhType(e.target.value)}
+              error={errors.cnh_type}
             >
               <option>A</option>
               <option>B</option>
@@ -118,14 +176,17 @@ function DriverForm({ vehicles, driver, show, cancel, save }) {
               <option>D</option>
               <option>E</option>
             </Select>
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Veiculo</Frm.Label>
+          <Form.Group>
+            <Form.Label>Veiculo</Form.Label>
             <Select
               className="form-control"
               name="vehicle"
               placeholder="Veículo"
+              value={selectedVehicleId}
+              onChange={(e) => setSelectedVehicleId(e.target.value)}
+              error={errors.vehicle}
             >
               {vehicles.map((vehicle) => (
                 <option key={vehicle._id} value={vehicle._id}>
@@ -133,17 +194,17 @@ function DriverForm({ vehicles, driver, show, cancel, save }) {
                 </option>
               ))}
             </Select>
-          </Frm.Group>
+          </Form.Group>
 
           <BtnGroup>
-            <Btn variant="secondary" onClick={cancel} data-testid="cancel">
+            <Button variant="secondary" onClick={cancel} data-testid="cancel">
               Cancelar
-            </Btn>
-            <Btn data-testid="submit" type="submit">
+            </Button>
+            <Button data-testid="submit" type="submit">
               Enviar
-            </Btn>
+            </Button>
           </BtnGroup>
-        </Form>
+        </form>
       )}
     </Modal>
   );
