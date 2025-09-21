@@ -9,11 +9,19 @@ import Drivers from '~/pages/Drivers';
 import api from '~/services/api';
 import history from '~/services/history';
 import factory from '../../utils/factory';
+import { __esModule } from 'react-datepicker';
 
 const apiMock = new MockAdapter(api);
 
 jest.mock('react-toastify');
 toast.error = jest.fn();
+
+jest.mock('react-input-mask', () => {
+  return {
+    __esModule: true,
+    default: ({ ...props }) => <input type="text" {...props} />,
+  };
+});
 
 describe('Drivers page', () => {
   it('should be able to list drivers', async () => {
@@ -26,18 +34,14 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, vehicles);
 
-    let getByText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-    });
+    const [{ name }] = drivers;
+    await waitFor(() => getByText(name));
 
     drivers.forEach((driver) => {
       Object.keys(driver).forEach((field) => {
@@ -61,18 +65,14 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, vehicles);
 
-    let getByText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-    });
+    const [{ name }] = drivers;
+    await waitFor(() => getByText(name));
 
     await act(async () => {
       fireEvent.click(getByTestId('active'));
@@ -100,18 +100,14 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, vehicles);
 
-    let getByText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-    });
+    const [{ name }] = drivers;
+    await waitFor(() => getByText(name));
 
     await act(async () => {
       fireEvent.click(getByTestId('with-vehicle'));
@@ -139,18 +135,13 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, vehicles);
 
-    let getByTestId;
-    let queryByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByTestId, queryByTestId, getByText } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByTestId = component.getByTestId;
-      queryByTestId = component.queryByTestId;
-    });
+    await waitFor(() => getByText(driver.name));
 
     fireEvent.click(getByTestId(`driver_disable_${driver._id}`));
 
@@ -173,20 +164,13 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, vehicles);
 
-    let getByTestId;
-    let getByText;
-    let queryByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByTestId, getByText, queryByTestId } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByTestId = component.getByTestId;
-      getByText = component.getByText;
-      queryByTestId = component.queryByTestId;
-    });
+    await waitFor(() => getByText(driver.name));
 
     fireEvent.click(getByTestId(`driver_disable_${driver._id}`));
 
@@ -213,16 +197,13 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, vehicles);
 
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByTestId, getByText } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByTestId = component.getByTestId;
-    });
+    await waitFor(() => getByText(driver.name));
 
     fireEvent.click(getByTestId(`driver_disable_${driver._id}`));
 
@@ -247,22 +228,14 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, [vehicle]);
 
-    let getByPlaceholderText;
-    let getByTestId;
-    let getByText;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
-
-      getByTestId = component.getByTestId;
-      getByPlaceholderText = component.getByPlaceholderText;
-      getByText = component.getByText;
-    });
+    const { getByPlaceholderText, getByTestId, getByText } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
     fireEvent.click(getByTestId('new'));
+
     fireEvent.change(getByPlaceholderText('Nome'), {
       target: {
         value: driver.name,
@@ -330,18 +303,11 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, [vehicle]);
 
-    let getByPlaceholderText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
-
-      getByTestId = component.getByTestId;
-      getByPlaceholderText = component.getByPlaceholderText;
-    });
+    const { getByPlaceholderText, getByTestId } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
     fireEvent.click(getByTestId('new'));
     fireEvent.change(getByPlaceholderText('Nome'), {
@@ -408,20 +374,13 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, [vehicle]);
 
-    let getByPlaceholderText;
-    let getByTestId;
-    let getByText;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByPlaceholderText, getByTestId, getByText } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByTestId = component.getByTestId;
-      getByPlaceholderText = component.getByPlaceholderText;
-      getByText = component.getByText;
-    });
+    await waitFor(() => getByText(driver.name));
 
     fireEvent.click(getByTestId(`driver_edit_${driver._id}`));
     fireEvent.change(getByPlaceholderText('Nome'), {
@@ -464,6 +423,8 @@ describe('Drivers page', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
+    await waitFor(() => getByText(newDriver.name));
+
     Object.keys(newDriver).forEach((field) => {
       if (!['_id', 'cnh_type', 'gender', 'vehicle'].includes(field)) {
         expect(getByText(newDriver[field])).toBeInTheDocument();
@@ -484,18 +445,13 @@ describe('Drivers page', () => {
       .onGet('vehicles')
       .reply(200, [vehicle]);
 
-    let queryByTestId;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Drivers />
-        </Router>
-      );
+    const { getByTestId, queryByTestId, getByText } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
 
-      getByTestId = component.getByTestId;
-      queryByTestId = component.queryByTestId;
-    });
+    await waitFor(() => getByText(driver.name));
 
     fireEvent.click(getByTestId(`driver_edit_${driver._id}`));
     expect(getByTestId('form')).toBeInTheDocument();
