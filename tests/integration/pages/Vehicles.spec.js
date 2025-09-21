@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act, fireEvent } from '@testing-library/react';
+import { render, act, fireEvent, waitFor } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import MockAdapter from 'axios-mock-adapter';
 import { toast } from 'react-toastify';
@@ -18,20 +18,17 @@ toast.error = jest.fn();
 describe('Vehicles page', () => {
   it('should be able to list vehicles', async () => {
     const vehicles = await factory.attrsMany('Vehicle', 3);
+
     apiMock.onGet('vehicles').reply(200, vehicles);
 
-    let getByText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Vehicles />
-        </Router>
-      );
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Vehicles />
+      </Router>
+    );
 
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-    });
+    const [{ _id }] = vehicles;
+    await waitFor(() => getByTestId(`vehicle_${_id}`));
 
     vehicles.forEach((vehicle) => {
       expect(getByText(vehicle.model)).toBeInTheDocument();
@@ -40,10 +37,10 @@ describe('Vehicles page', () => {
   });
 
   it('should be able to create a vehicle', async () => {
-    const [vehicle, newVehicle] = await factory.attrsMany('Vehicle', 2, [
-      { type: 1 },
-      { type: 2 },
-    ]);
+    const [vehicle, newVehicle] = await factory.attrsMany('Vehicle', 2);
+
+    vehicle.type = '1';
+    newVehicle.type = '2';
 
     apiMock
       .onGet('vehicles')
@@ -51,22 +48,16 @@ describe('Vehicles page', () => {
       .onPost('vehicles')
       .reply(200);
 
-    let getByText;
-    let getByPlaceholderText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Vehicles />
-        </Router>
-      );
+    const { getByText, getByPlaceholderText, getByTestId, debug } = render(
+      <Router history={history}>
+        <Vehicles />
+      </Router>
+    );
 
-      getByText = component.getByText;
-      getByPlaceholderText = component.getByPlaceholderText;
-      getByTestId = component.getByTestId;
-    });
+    await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
 
     fireEvent.click(getByTestId('new'));
+
     fireEvent.change(getByPlaceholderText('Modelo'), {
       target: { value: newVehicle.model },
     });
@@ -95,20 +86,13 @@ describe('Vehicles page', () => {
       .onPut(`/vehicles/${vehicle._id}`)
       .reply(200);
 
-    let getByText;
-    let getByPlaceholderText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Vehicles />
-        </Router>
-      );
+    const { getByText, getByPlaceholderText, getByTestId, debug } = render(
+      <Router history={history}>
+        <Vehicles />
+      </Router>
+    );
 
-      getByText = component.getByText;
-      getByPlaceholderText = component.getByPlaceholderText;
-      getByTestId = component.getByTestId;
-    });
+    await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
 
     fireEvent.click(getByTestId(`vehicle_${vehicle._id}`));
     fireEvent.change(getByPlaceholderText('Modelo'), {
@@ -122,6 +106,8 @@ describe('Vehicles page', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
+    await waitFor(() => getByText(newVehicle.model));
+
     expect(getByText(newVehicle.model)).toBeInTheDocument();
     expect(getByText(VehicleTypeTitle(newVehicle.type))).toBeInTheDocument();
   });
@@ -131,18 +117,13 @@ describe('Vehicles page', () => {
 
     apiMock.onGet('vehicles').reply(200, [vehicle]);
 
-    let getByTestId;
-    let queryByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Vehicles />
-        </Router>
-      );
+    const { getByTestId, queryByTestId } = render(
+      <Router history={history}>
+        <Vehicles />
+      </Router>
+    );
 
-      getByTestId = component.getByTestId;
-      queryByTestId = component.queryByTestId;
-    });
+    await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
 
     fireEvent.click(getByTestId(`vehicle_${vehicle._id}`));
     expect(getByTestId('form')).toBeInTheDocument();
@@ -164,18 +145,13 @@ describe('Vehicles page', () => {
       .onPut(`/vehicles/${vehicle._id}`)
       .reply(400);
 
-    let getByPlaceholderText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <Router history={history}>
-          <Vehicles />
-        </Router>
-      );
+    const { getByPlaceholderText, getByTestId } = render(
+      <Router history={history}>
+        <Vehicles />
+      </Router>
+    );
 
-      getByPlaceholderText = component.getByPlaceholderText;
-      getByTestId = component.getByTestId;
-    });
+    await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
 
     fireEvent.click(getByTestId(`vehicle_${vehicle._id}`));
     fireEvent.change(getByPlaceholderText('Modelo'), {
