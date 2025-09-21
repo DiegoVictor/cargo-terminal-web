@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
-import { Form } from '@unform/web';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { Button as Btn, Form as Frm } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import api from '~/services/api';
@@ -17,64 +16,93 @@ const schema = Yup.object().shape({
 });
 
 function VehicleForm({ vehicle, save, cancel }) {
-  const handleVehicleForm = useCallback(
-    (data) => {
-      (async () => {
-        try {
-          if (vehicle._id) {
-            await api.put(`/vehicles/${vehicle._id}`, data);
-            save({
-              _id: vehicle._id,
-              ...data,
-            });
-            toast.success('Veículo atualizado com sucesso!');
-          } else {
-            await api.post('vehicles', data);
-            save(data);
-            toast.success('Veículo criado com sucesso!');
+  const [errors, setErrors] = useState({});
+  const [selectedType, setSelectedType] = useState(vehicle?.type ?? '1');
+
+  const send = (data) => {
+    if (data._id) {
+      return api.put(`/vehicles/${data._id}`, data);
+    }
+    return api.post('/vehicles', data);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setErrors({});
+
+    try {
+      const formData = new FormData(event.target);
+      const { model } = Object.fromEntries(formData.entries());
+
+      const data = {
+        _id: vehicle?._id,
+        model,
+        type: selectedType,
+      };
+      await schema.validate(data, { abortEarly: false });
+
+      await send(data);
+      save(data);
+
+      toast.success('Veículo atualizado/criado com sucesso!');
+      setSelectedType('1');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            validationErrors[error.path] = error.message;
           }
-        } catch (err) {
-          toast.error('Não foi possivel criar o novo veículo');
-        }
-      })();
-    },
-    [vehicle, save]
-  );
+        });
+
+        setErrors(validationErrors);
+      } else {
+        toast.error('Não foi possivel criar o novo veículo');
+      }
+    }
+  };
 
   return (
     <Modal show={!!vehicle} onHide={cancel} title="Veículo">
       {vehicle && (
-        <Form
-          initialData={vehicle}
-          schema={schema}
-          onSubmit={handleVehicleForm}
-          data-testid="form"
-        >
-          <Frm.Group>
-            <Frm.Label>Modelo</Frm.Label>
-            <Input className="form-control" name="model" placeholder="Modelo" />
-          </Frm.Group>
+        <form onSubmit={handleSubmit} method="post" data-testid="form">
+          <Form.Group>
+            <Form.Label>Modelo</Form.Label>
+            <Input
+              className="form-control"
+              name="model"
+              placeholder="Modelo"
+              error={errors.model}
+            />
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Tipo</Frm.Label>
-            <Select className="form-control" name="type" placeholder="Tipo">
+          <Form.Group>
+            <Form.Label>Tipo</Form.Label>
+            <Select
+              className="form-control"
+              name="type"
+              placeholder="Tipo"
+              error={errors.type}
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+            >
               <option value="1">Caminhão 3/4</option>
               <option value="2">Caminhão Toco</option>
               <option value="3">Caminhão Truck</option>
               <option value="4">Carreta Simples</option>
               <option value="5">Carreta Eixo Extendido</option>
             </Select>
-          </Frm.Group>
+          </Form.Group>
 
           <BtnGroup>
-            <Btn data-testid="cancel" variant="secondary" onClick={cancel}>
+            <Button data-testid="cancel" variant="secondary" onClick={cancel}>
               Cancelar
-            </Btn>
-            <Btn data-testid="submit" type="submit">
+            </Button>
+            <Button data-testid="submit" type="submit">
               Enviar
-            </Btn>
+            </Button>
           </BtnGroup>
-        </Form>
+        </form>
       )}
     </Modal>
   );
