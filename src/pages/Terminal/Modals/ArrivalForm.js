@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
-import { Form } from '@unform/web';
-import { Button as Btn, Form as Frm, Row, Col } from 'react-bootstrap';
+import React, { useCallback, useState } from 'react';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
@@ -31,44 +30,79 @@ const schema = Yup.object().shape({
 });
 
 function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
-  const handleTerminalForm = useCallback(
-    (data) => {
-      (async () => {
-        try {
-          if (arrival._id) {
-            const response = await api.put(`/arrivals/${arrival._id}`, data);
-            save(response.data);
+  const [errors, setErrors] = useState({});
+  const [filled, setFilled] = useState('');
+  const [vehicleId, setVehicleId] = useState('');
+  const [driverId, setDriverId] = useState('');
 
-            toast.success('Registro atualizado com sucesso!');
-          } else {
-            const response = await api.post('arrivals', data);
-            save(response.data);
+  const send = async (data) => {
+    if (data._id) {
+      return api.put(`/arrivals/${arrival._id}`, data);
+    }
+    return api.post('arrivals', data);
+  };
 
-            toast.success('Registro criado com sucesso!');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setErrors({});
+
+    try {
+      const formData = new FormData(event.target);
+      const props = Object.fromEntries(formData.entries());
+
+      const data = {
+        _id: arrival?._id,
+        origin: {
+          latitude: props['origin[latitude]'],
+          longitude: props['origin[longitude]'],
+        },
+        destination: {
+          latitude: props['destination[latitude]'],
+          longitude: props['destination[longitude]'],
+        },
+        filled: Boolean(Number(filled)),
+        vehicle_id: vehicleId,
+        driver_id: driverId,
+      };
+      await schema.validate(data, { abortEarly: false });
+
+      const response = await send(data);
+
+      save(response.data);
+      toast.success('Registro atualizado/criado com sucesso!');
+
+      setFilled('');
+      setVehicleId('');
+      setDriverId('');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            validationErrors[error.path] = error.message;
           }
-        } catch (err) {
-          toast.error('Não foi possivel criar o novo registro');
-        }
-      })();
-    },
-    [arrival._id, save]
-  );
+        });
+
+        setErrors(validationErrors);
+      } else {
+        toast.error('Não foi possivel criar o novo registro');
+      }
+    }
+  };
 
   return (
     <Modal show={show} title="Terminal" onHide={cancel}>
       {show && (
-        <Form
-          schema={schema}
-          initialData={arrival}
-          onSubmit={handleTerminalForm}
-          data-testid="form"
-        >
-          <Frm.Group>
-            <Frm.Label>Motorista</Frm.Label>
+        <form onSubmit={handleSubmit} data-testid="form">
+          <Form.Group>
+            <Form.Label>Motorista</Form.Label>
             <Select
               className="form-control"
               name="driver_id"
               placeholder="Motorista"
+              value={driverId}
+              onChange={(e) => setDriverId(e.target.value)}
+              error={errors.driver_id}
             >
               {drivers.map((driver) => (
                 <option key={driver._id} value={driver._id}>
@@ -76,14 +110,17 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
                 </option>
               ))}
             </Select>
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Veículo</Frm.Label>
+          <Form.Group>
+            <Form.Label>Veículo</Form.Label>
             <Select
               className="form-control"
               name="vehicle_id"
               placeholder="Veículo"
+              value={vehicleId}
+              onChange={(e) => setVehicleId(e.target.value)}
+              error={errors.vehicle_id}
             >
               {vehicles.map((vehicle) => (
                 <option key={vehicle._id} value={vehicle._id}>
@@ -91,39 +128,42 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
                 </option>
               ))}
             </Select>
-          </Frm.Group>
+          </Form.Group>
 
-          <Frm.Group>
-            <Frm.Label>Carregado</Frm.Label>
+          <Form.Group>
+            <Form.Label>Carregado</Form.Label>
             <Select
               className="form-control"
               name="filled"
               placeholder="Carregado"
+              value={filled}
+              onChange={(e) => setFilled(e.target.value)}
+              error={errors.filled}
             >
               <option value="0">Não</option>
               <option value="1">Sim</option>
             </Select>
-          </Frm.Group>
+          </Form.Group>
 
           <FormGroup>
             <strong>
-              <Frm.Label>Origem</Frm.Label>
+              <Form.Label>Origem</Form.Label>
             </strong>
             <Row>
               <Col>
-                <Frm.Label>Latitude</Frm.Label>
+                <Form.Label>Latitude</Form.Label>
                 <Input
                   className="form-control"
                   name="origin[latitude]"
-                  data-testid="latitude_origin"
+                  data-testid="origin_latitude"
                 />
               </Col>
               <Col>
-                <Frm.Label>Longitude</Frm.Label>
+                <Form.Label>Longitude</Form.Label>
                 <Input
                   className="form-control"
                   name="origin[longitude]"
-                  data-testid="longitude_origin"
+                  data-testid="origin_longitude"
                 />
               </Col>
             </Row>
@@ -131,37 +171,37 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
 
           <FormGroup>
             <strong>
-              <Frm.Label>Destino</Frm.Label>
+              <Form.Label>Destino</Form.Label>
             </strong>
             <Row>
               <Col>
-                <Frm.Label>Latitude</Frm.Label>
+                <Form.Label>Latitude</Form.Label>
                 <Input
                   className="form-control"
                   name="destination[latitude]"
-                  data-testid="latitude_destination"
+                  data-testid="destination_latitude"
                 />
               </Col>
               <Col>
-                <Frm.Label>Longitude</Frm.Label>
+                <Form.Label>Longitude</Form.Label>
                 <Input
                   className="form-control"
                   name="destination[longitude]"
-                  data-testid="longitude_destination"
+                  data-testid="destination_longitude"
                 />
               </Col>
             </Row>
           </FormGroup>
 
           <BtnGroup>
-            <Btn data-testid="cancel" variant="secondary" onClick={cancel}>
+            <Button data-testid="cancel" variant="secondary" onClick={cancel}>
               Cancelar
-            </Btn>
-            <Btn data-testid="submit" type="submit">
+            </Button>
+            <Button data-testid="submit" type="submit">
               Enviar
-            </Btn>
+            </Button>
           </BtnGroup>
-        </Form>
+        </form>
       )}
     </Modal>
   );
