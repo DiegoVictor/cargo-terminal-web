@@ -166,22 +166,22 @@ describe('Terminal page', () => {
         value: newArrival.filled ? 1 : 0,
       },
     });
-    fireEvent.change(getByTestId('latitude_origin'), {
+    fireEvent.change(getByTestId('origin_latitude'), {
       target: {
         value: newArrival.origin[1],
       },
     });
-    fireEvent.change(getByTestId('longitude_origin'), {
+    fireEvent.change(getByTestId('origin_longitude'), {
       target: {
         value: newArrival.origin[0],
       },
     });
-    fireEvent.change(getByTestId('latitude_destination'), {
+    fireEvent.change(getByTestId('destination_latitude'), {
       target: {
         value: newArrival.destination[1],
       },
     });
-    fireEvent.change(getByTestId('longitude_destination'), {
+    fireEvent.change(getByTestId('destination_longitude'), {
       target: {
         value: newArrival.destination[0],
       },
@@ -241,22 +241,22 @@ describe('Terminal page', () => {
         value: newArrival.filled ? 1 : 0,
       },
     });
-    fireEvent.change(getByTestId('latitude_origin'), {
+    fireEvent.change(getByTestId('origin_latitude'), {
       target: {
         value: newArrival.origin[1],
       },
     });
-    fireEvent.change(getByTestId('longitude_origin'), {
+    fireEvent.change(getByTestId('origin_longitude'), {
       target: {
         value: newArrival.origin[0],
       },
     });
-    fireEvent.change(getByTestId('latitude_destination'), {
+    fireEvent.change(getByTestId('destination_latitude'), {
       target: {
         value: newArrival.destination[1],
       },
     });
-    fireEvent.change(getByTestId('longitude_destination'), {
+    fireEvent.change(getByTestId('destination_longitude'), {
       target: {
         value: newArrival.destination[0],
       },
@@ -313,22 +313,22 @@ describe('Terminal page', () => {
         value: newArrival.filled ? 1 : 0,
       },
     });
-    fireEvent.change(getByTestId('latitude_origin'), {
+    fireEvent.change(getByTestId('origin_latitude'), {
       target: {
         value: newArrival.origin[1],
       },
     });
-    fireEvent.change(getByTestId('longitude_origin'), {
+    fireEvent.change(getByTestId('origin_longitude'), {
       target: {
         value: newArrival.origin[0],
       },
     });
-    fireEvent.change(getByTestId('latitude_destination'), {
+    fireEvent.change(getByTestId('destination_latitude'), {
       target: {
         value: newArrival.destination[1],
       },
     });
-    fireEvent.change(getByTestId('longitude_destination'), {
+    fireEvent.change(getByTestId('destination_longitude'), {
       target: {
         value: newArrival.destination[0],
       },
