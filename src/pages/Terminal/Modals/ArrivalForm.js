@@ -13,11 +13,21 @@ import api from '~/services/api';
 import { BtnGroup, FormGroup } from './styles';
 
 const schema = Yup.object().shape({
-  filled: Yup.string().required(),
-  vehicle: Yup.string().required(),
-  driver: Yup.string().required(),
-  origin: Yup.string().required(),
-  destination: Yup.string().required(),
+  filled: Yup.boolean().required(),
+  vehicle_id: Yup.string().required(),
+  driver_id: Yup.string().required(),
+  origin: Yup.object()
+    .shape({
+      latitude: Yup.string().required(),
+      longitude: Yup.string().required(),
+    })
+    .required(),
+  destination: Yup.object()
+    .shape({
+      latitude: Yup.string().required(),
+      longitude: Yup.string().required(),
+    })
+    .required(),
 });
 
 function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
