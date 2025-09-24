@@ -24,9 +24,11 @@ Input.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   error: PropTypes.string,
+  mask: PropTypes.string,
 };
 
 Input.defaultProps = {
   error: null,
   type: 'text',
+  mask: null,
 };
