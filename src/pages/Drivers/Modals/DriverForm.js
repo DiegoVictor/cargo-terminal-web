@@ -28,7 +28,7 @@ function DriverForm({ vehicles, driver, show, cancel, save }) {
     driver?.cnh_type ?? 'A'
   );
   const [selectedVehicleId, setSelectedVehicleId] = useState(
-    driver?.vehicle ?? ''
+    driver?.vehicle_id ?? ''
   );
 
   const send = async (data) => {
@@ -58,7 +58,7 @@ function DriverForm({ vehicles, driver, show, cancel, save }) {
         cnh_number,
         gender: selectedGender,
         cnh_type: selectedCnhType,
-        vehicle: selectedVehicleId,
+        vehicle_id: selectedVehicleId,
       };
       await schema.validate(data, { abortEarly: false });
 
@@ -222,7 +222,7 @@ DriverForm.propTypes = {
     _id: PropTypes.string,
     gender: PropTypes.string,
     cnh_type: PropTypes.string,
-    vehicle: PropTypes.string,
+    vehicle_id: PropTypes.string,
   }),
   show: PropTypes.bool.isRequired,
   cancel: PropTypes.func.isRequired,
