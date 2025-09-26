@@ -17,7 +17,7 @@ const schema = Yup.object().shape({
 
 function VehicleForm({ vehicle, save, cancel }) {
   const [errors, setErrors] = useState({});
-  const [selectedType, setSelectedType] = useState(vehicle?.type ?? '1');
+  const [selectedType, setSelectedType] = useState('1');
 
   const send = (data) => {
     if (data._id) {
