@@ -1,7 +1,7 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import './react-datepicker.css';
 
 export const Container = styled.div`
   height: 100%;
