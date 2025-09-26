@@ -220,6 +220,9 @@ DriverForm.propTypes = {
   ).isRequired,
   driver: PropTypes.shape({
     _id: PropTypes.string,
+    gender: PropTypes.string,
+    cnh_type: PropTypes.string,
+    vehicle: PropTypes.string,
   }),
   show: PropTypes.bool.isRequired,
   cancel: PropTypes.func.isRequired,
