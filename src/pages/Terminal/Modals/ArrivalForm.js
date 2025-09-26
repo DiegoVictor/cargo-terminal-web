@@ -47,23 +47,21 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
     setErrors({});
 
     try {
-      const formData = new FormData(event.target);
-      const props = Object.fromEntries(formData.entries());
-
       const data = {
         _id: arrival?._id,
-        origin: {
-          latitude: props['origin[latitude]'],
-          longitude: props['origin[longitude]'],
-        },
-        destination: {
-          latitude: props['destination[latitude]'],
-          longitude: props['destination[longitude]'],
-        },
+        origin: { latitude: null, longitude: null },
+        destination: { latitude: null, longitude: null },
         filled: Boolean(Number(filled)),
         vehicle_id: vehicleId,
         driver_id: driverId,
       };
+
+      const formData = new FormData(event.target);
+      for (const [key, value] of formData.entries()) {
+        const [field, subfield] = key.match(/(\w+)/g);
+        data[field][subfield] = value;
+      }
+
       await schema.validate(data, { abortEarly: false });
 
       const response = await send(data);
