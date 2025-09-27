@@ -23,12 +23,10 @@ const schema = Yup.object().shape({
 
 function DriverForm({ vehicles, driver, show, cancel, save }) {
   const [errors, setErrors] = useState({});
-  const [selectedGender, setSelectedGender] = useState(driver?.gender ?? 'F');
-  const [selectedCnhType, setSelectedCnhType] = useState(
-    driver?.cnh_type ?? 'A'
-  );
+  const [selectedGender, setSelectedGender] = useState(driver?.gender);
+  const [selectedCnhType, setSelectedCnhType] = useState(driver?.cnh_type);
   const [selectedVehicleId, setSelectedVehicleId] = useState(
-    driver?.vehicle_id ?? ''
+    driver?.vehicle_id
   );
 
   const send = async (data) => {
