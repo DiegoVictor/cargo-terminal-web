@@ -360,6 +360,41 @@ describe('Drivers page', () => {
     );
   });
 
+  it('should be able to see validation errors', async () => {
+    const driver = await factory.attrs('Driver');
+    const vehicle = await factory.attrs('Vehicle');
+
+    apiMock
+      .onGet('drivers')
+      .reply(200, [])
+      .onGet('vehicles')
+      .reply(200, [vehicle]);
+
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Drivers />
+      </Router>
+    );
+
+    fireEvent.click(getByTestId('new'));
+
+    await act(async () => {
+      fireEvent.click(getByTestId('submit'));
+    });
+
+    [
+      'name',
+      'cpf',
+      'phone',
+      'birthday',
+      'cnh_number',
+      'cnh_type',
+      'gender',
+    ].forEach((field) => {
+      expect(getByText(`${field} is a required field`)).toBeInTheDocument();
+    });
+  });
+
   it('should be able to edit a driver', async () => {
     const [driver, newDriver, ...rest] = await factory.attrsMany('Driver', 3);
     const vehicle = await factory.attrs('Vehicle');
