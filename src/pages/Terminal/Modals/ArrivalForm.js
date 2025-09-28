@@ -31,9 +31,9 @@ const schema = Yup.object().shape({
 
 function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
   const [errors, setErrors] = useState({});
-  const [filled, setFilled] = useState('');
-  const [vehicleId, setVehicleId] = useState('');
-  const [driverId, setDriverId] = useState('');
+  const [filled, setFilled] = useState();
+  const [vehicleId, setVehicleId] = useState();
+  const [driverId, setDriverId] = useState();
 
   const send = async (data) => {
     if (data._id) {
@@ -51,7 +51,7 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
         _id: arrival?._id,
         origin: { latitude: null, longitude: null },
         destination: { latitude: null, longitude: null },
-        filled: Boolean(Number(filled)),
+        filled: filled && Boolean(Number(filled)),
         vehicle_id: vehicleId,
         driver_id: driverId,
       };
@@ -69,16 +69,14 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
       save(response.data);
       toast.success('Registro atualizado/criado com sucesso!');
 
-      setFilled('');
-      setVehicleId('');
-      setDriverId('');
+      setFilled();
+      setVehicleId();
+      setDriverId();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = {};
         err.inner.forEach((error) => {
-          if (error.path) {
-            validationErrors[error.path] = error.message;
-          }
+          validationErrors[error.path] = error.message;
         });
 
         setErrors(validationErrors);
@@ -154,6 +152,7 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
                   className="form-control"
                   name="origin[latitude]"
                   data-testid="origin_latitude"
+                  error={errors['origin.latitude']}
                 />
               </Col>
               <Col>
@@ -162,6 +161,7 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
                   className="form-control"
                   name="origin[longitude]"
                   data-testid="origin_longitude"
+                  error={errors['origin.longitude']}
                 />
               </Col>
             </Row>
@@ -178,6 +178,7 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
                   className="form-control"
                   name="destination[latitude]"
                   data-testid="destination_latitude"
+                  error={errors['destination.latitude']}
                 />
               </Col>
               <Col>
@@ -186,6 +187,7 @@ function ArrivalForm({ arrival, drivers, vehicles, show, cancel, save }) {
                   className="form-control"
                   name="destination[longitude]"
                   data-testid="destination_longitude"
+                  error={errors['destination.longitude']}
                 />
               </Col>
             </Row>
