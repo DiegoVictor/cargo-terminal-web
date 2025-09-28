@@ -29,19 +29,17 @@ function Drivers() {
 
   const handleDisableDriver = useCallback(() => {
     (async () => {
-      if (disableDriver) {
-        try {
-          await api.put(`/drivers/${disableDriver._id}`, { active: false });
+      try {
+        await api.put(`/drivers/${disableDriver._id}`, { active: false });
 
-          confirmDisableDriver(null);
-          setDrivers(
-            drivers.filter((driver) => driver._id !== disableDriver._id)
-          );
+        confirmDisableDriver(null);
+        setDrivers(
+          drivers.filter((driver) => driver._id !== disableDriver._id)
+        );
 
-          toast.success('Motorista desativado com sucesso!');
-        } catch (err) {
-          toast.error('Não foi possivel desativar o motorista');
-        }
+        toast.success('Motorista desativado com sucesso!');
+      } catch (err) {
+        toast.error('Não foi possivel desativar o motorista');
       }
     })();
   }, [disableDriver, drivers]);
