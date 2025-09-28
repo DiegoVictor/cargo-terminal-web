@@ -271,6 +271,46 @@ describe('Terminal page', () => {
     );
   });
 
+  it('should be able to see validation errors', async () => {
+    const driver = await factory.attrs('Driver');
+    const vehicle = await factory.attrs('Vehicle');
+    const [arrival] = await factory.attrsMany('Arrival', 2);
+
+    apiMock
+      .onGet('drivers')
+      .reply(200, [driver])
+      .onGet('vehicles')
+      .reply(200, [vehicle])
+      .onGet('arrivals')
+      .reply(200, [arrival]);
+
+    const { getByText, getByTestId } = render(
+      <Router history={history}>
+        <Terminal />
+      </Router>
+    );
+
+    await waitFor(() => getByText(arrival.driver.name));
+
+    fireEvent.click(getByTestId('new'));
+
+    await act(async () => {
+      fireEvent.click(getByTestId('submit'));
+    });
+
+    ['driver_id', 'vehicle_id', 'filled'].forEach((field) => {
+      expect(getByText(`${field} is a required field`)).toBeInTheDocument();
+    });
+
+    ['origin', 'destination'].forEach((field) => {
+      ['latitude', 'longitude'].forEach((subfield) => {
+        expect(
+          getByText(`${field}.${subfield} is a required field`)
+        ).toBeInTheDocument();
+      });
+    });
+  });
+
   it('should be able to edit an arrival', async () => {
     const driver = await factory.attrs('Driver');
     const vehicle = await factory.attrs('Vehicle');
