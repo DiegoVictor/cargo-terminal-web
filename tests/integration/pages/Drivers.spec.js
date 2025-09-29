@@ -361,7 +361,6 @@ describe('Drivers page', () => {
   });
 
   it('should be able to see validation errors', async () => {
-    const driver = await factory.attrs('Driver');
     const vehicle = await factory.attrs('Vehicle');
 
     apiMock
