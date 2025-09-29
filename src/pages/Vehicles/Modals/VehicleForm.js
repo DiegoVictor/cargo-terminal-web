@@ -17,7 +17,7 @@ const schema = Yup.object().shape({
 
 function VehicleForm({ vehicle, save, cancel }) {
   const [errors, setErrors] = useState({});
-  const [selectedType, setSelectedType] = useState('1');
+  const [selectedType, setSelectedType] = useState();
 
   const send = (data) => {
     if (data._id) {
@@ -50,9 +50,7 @@ function VehicleForm({ vehicle, save, cancel }) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = {};
         err.inner.forEach((error) => {
-          if (error.path) {
-            validationErrors[error.path] = error.message;
-          }
+          validationErrors[error.path] = error.message;
         });
 
         setErrors(validationErrors);
