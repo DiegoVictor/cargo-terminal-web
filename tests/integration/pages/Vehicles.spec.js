@@ -73,6 +73,33 @@ describe('Vehicles page', () => {
     expect(getByText(VehicleTypeTitle(vehicle.type))).toBeInTheDocument();
   });
 
+  it('should be able to see validation errors', async () => {
+    const [vehicle, newVehicle] = await factory.attrsMany('Vehicle', 2);
+
+    vehicle.type = '1';
+    newVehicle.type = '2';
+
+    apiMock.onGet('vehicles').reply(200, [vehicle]);
+
+    const { getByText, getByPlaceholderText, getByTestId, debug } = render(
+      <Router history={history}>
+        <Vehicles />
+      </Router>
+    );
+
+    await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
+
+    fireEvent.click(getByTestId('new'));
+
+    await act(async () => {
+      fireEvent.click(getByTestId('submit'));
+    });
+
+    ['model', 'type'].forEach((field) => {
+      expect(getByText(`${field} is a required field`)).toBeInTheDocument();
+    });
+  });
+
   it('should be able to edit a vehicle', async () => {
     const [newVehicle, vehicle, ...rest] = await factory.attrsMany(
       'Vehicle',
