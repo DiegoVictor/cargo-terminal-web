@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link as A, useRouteMatch } from 'react-router-dom';
+import { Link as A, useMatch } from 'react-router';
 import PropTypes from 'prop-types';
 
 export default function Link({ children, to }) {
-  const match = useRouteMatch({
+  const match = useMatch({
     path: to,
     exact: true,
   });

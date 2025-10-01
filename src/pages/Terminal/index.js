@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Spinner, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import DatePicker from 'react-datepicker';
 
 import api from '~/services/api';

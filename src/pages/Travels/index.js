@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Table, Spinner } from 'react-bootstrap';
 
 import api from '~/services/api';
