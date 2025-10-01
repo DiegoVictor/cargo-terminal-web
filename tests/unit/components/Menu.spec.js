@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Router } from 'react-router-dom';
+import { Router } from 'react-router';
 
 import history from '~/services/history';
 import Menu from '~/components/Menu';

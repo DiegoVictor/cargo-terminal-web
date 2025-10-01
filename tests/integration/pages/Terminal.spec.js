@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
-import { Router } from 'react-router-dom';
+import { Router } from 'react-router';
 import { act } from 'react-dom/test-utils';
 import { toast } from 'react-toastify';
 
