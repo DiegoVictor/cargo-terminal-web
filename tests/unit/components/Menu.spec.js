@@ -1,8 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Router } from 'react-router';
-
-import history from '~/services/history';
+import { MemoryRouter, Routes } from 'react-router';
 import Menu from '~/components/Menu';
 
 describe('Link component', () => {
@@ -14,9 +12,9 @@ describe('Link component', () => {
       { label: 'Viagens', url: '/travels' },
     ];
     const { getByText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Menu />
-      </Router>
+      </MemoryRouter>
     );
 
     menus.forEach(({ label, url }) => {
