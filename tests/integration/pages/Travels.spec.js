@@ -1,10 +1,9 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
-import { Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 
 import api from '~/services/api';
-import history from '~/services/history';
 import Travels from '~/pages/Travels';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 import factory from '../../utils/factory';
@@ -19,9 +18,9 @@ describe('Travels page', () => {
     let getByText;
     await act(async () => {
       const component = render(
-        <Router history={history}>
+        <MemoryRouter>
           <Travels />
-        </Router>
+        </MemoryRouter>
       );
       getByText = component.getByText;
     });

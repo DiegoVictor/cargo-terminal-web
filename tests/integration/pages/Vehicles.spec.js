@@ -1,11 +1,10 @@
 import React from 'react';
 import { render, act, fireEvent, waitFor } from '@testing-library/react';
-import { Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import MockAdapter from 'axios-mock-adapter';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
-import history from '~/services/history';
 import Vehicles from '~/pages/Vehicles';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 import factory from '../../utils/factory';
@@ -22,9 +21,9 @@ describe('Vehicles page', () => {
     apiMock.onGet('vehicles').reply(200, vehicles);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Vehicles />
-      </Router>
+      </MemoryRouter>
     );
 
     const [{ _id }] = vehicles;
@@ -49,9 +48,9 @@ describe('Vehicles page', () => {
       .reply(200);
 
     const { getByText, getByPlaceholderText, getByTestId, debug } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Vehicles />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
@@ -82,9 +81,9 @@ describe('Vehicles page', () => {
     apiMock.onGet('vehicles').reply(200, [vehicle]);
 
     const { getByText, getByPlaceholderText, getByTestId, debug } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Vehicles />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
@@ -114,9 +113,9 @@ describe('Vehicles page', () => {
       .reply(200);
 
     const { getByText, getByPlaceholderText, getByTestId, debug } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Vehicles />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
@@ -145,9 +144,9 @@ describe('Vehicles page', () => {
     apiMock.onGet('vehicles').reply(200, [vehicle]);
 
     const { getByTestId, queryByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Vehicles />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));
@@ -173,9 +172,9 @@ describe('Vehicles page', () => {
       .reply(400);
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Vehicles />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByTestId(`vehicle_${vehicle._id}`));

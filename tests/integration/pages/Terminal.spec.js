@@ -1,12 +1,11 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
-import { Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import { act } from 'react-dom/test-utils';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
-import history from '~/services/history';
 import Terminal from '~/pages/Terminal';
 import VehicleTypeTitle from '~/helpers/VehicleTypeTitle';
 import factory from '../../utils/factory';
@@ -52,9 +51,9 @@ describe('Terminal page', () => {
       .reply(200, arrivals);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Terminal />
-      </Router>
+      </MemoryRouter>
     );
 
     const [
@@ -100,9 +99,9 @@ describe('Terminal page', () => {
       .reply(200, arrivals);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Terminal />
-      </Router>
+      </MemoryRouter>
     );
 
     const [
@@ -143,9 +142,9 @@ describe('Terminal page', () => {
       .reply(200, { ...newArrival, driver, vehicle });
 
     const { getByText, getByTestId, getByPlaceholderText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Terminal />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(arrival.driver.name));
@@ -218,9 +217,9 @@ describe('Terminal page', () => {
       .reply(400);
 
     const { getByText, getByTestId, getByPlaceholderText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Terminal />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(arrival.driver.name));
@@ -285,9 +284,9 @@ describe('Terminal page', () => {
       .reply(200, [arrival]);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Terminal />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(arrival.driver.name));
@@ -330,9 +329,9 @@ describe('Terminal page', () => {
       .reply(200, { ...newArrival, driver, vehicle, _id: arrival._id });
 
     const { getByText, getByTestId, getByPlaceholderText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Terminal />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(arrival.driver.name));
@@ -403,9 +402,9 @@ describe('Terminal page', () => {
       .reply(200, [arrival]);
 
     const { getByText, getByTestId, queryByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Terminal />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(arrival.driver.name));
