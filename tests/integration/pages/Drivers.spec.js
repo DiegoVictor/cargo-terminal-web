@@ -9,7 +9,6 @@ import Drivers from '~/pages/Drivers';
 import api from '~/services/api';
 import history from '~/services/history';
 import factory from '../../utils/factory';
-import { __esModule } from 'react-datepicker';
 
 const apiMock = new MockAdapter(api);
 
