@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
-import { Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import { toast } from 'react-toastify';
 import { act } from 'react-dom/test-utils';
 
 import Drivers from '~/pages/Drivers';
 import api from '~/services/api';
-import history from '~/services/history';
+
 import factory from '../../utils/factory';
 
 const apiMock = new MockAdapter(api);
@@ -34,9 +34,9 @@ describe('Drivers page', () => {
       .reply(200, vehicles);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     const [{ name }] = drivers;
@@ -65,9 +65,9 @@ describe('Drivers page', () => {
       .reply(200, vehicles);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     const [{ name }] = drivers;
@@ -100,9 +100,9 @@ describe('Drivers page', () => {
       .reply(200, vehicles);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     const [{ name }] = drivers;
@@ -135,9 +135,9 @@ describe('Drivers page', () => {
       .reply(200, vehicles);
 
     const { getByTestId, queryByTestId, getByText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(driver.name));
@@ -164,9 +164,9 @@ describe('Drivers page', () => {
       .reply(200, vehicles);
 
     const { getByTestId, getByText, queryByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(driver.name));
@@ -197,9 +197,9 @@ describe('Drivers page', () => {
       .reply(200, vehicles);
 
     const { getByTestId, getByText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(driver.name));
@@ -228,9 +228,9 @@ describe('Drivers page', () => {
       .reply(200, [vehicle]);
 
     const { getByPlaceholderText, getByTestId, getByText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     fireEvent.click(getByTestId('new'));
@@ -303,9 +303,9 @@ describe('Drivers page', () => {
       .reply(200, [vehicle]);
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     fireEvent.click(getByTestId('new'));
@@ -369,9 +369,9 @@ describe('Drivers page', () => {
       .reply(200, [vehicle]);
 
     const { getByText, getByTestId } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     fireEvent.click(getByTestId('new'));
@@ -408,9 +408,9 @@ describe('Drivers page', () => {
       .reply(200, [vehicle]);
 
     const { getByPlaceholderText, getByTestId, getByText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(driver.name));
@@ -479,9 +479,9 @@ describe('Drivers page', () => {
       .reply(200, [vehicle]);
 
     const { getByTestId, queryByTestId, getByText } = render(
-      <Router history={history}>
+      <MemoryRouter>
         <Drivers />
-      </Router>
+      </MemoryRouter>
     );
 
     await waitFor(() => getByText(driver.name));
