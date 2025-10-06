@@ -1,6 +1,6 @@
 # [Web] Cargo Terminal
 [![CircleCI](https://img.shields.io/circleci/build/github/DiegoVictor/cargo-terminal-web?style=flat-square&logo=circleci)](https://app.circleci.com/pipelines/github/DiegoVictor/cargo-terminal-web)
-[![react](https://img.shields.io/badge/reactjs-18.2.0-61dafb?style=flat-square&logo=react)](https://reactjs.org/)
+[![react](https://img.shields.io/badge/reactjs-19.2.0-61dafb?style=flat-square&logo=react)](https://reactjs.org/)
 [![styled-components](https://img.shields.io/badge/styled_components-6.1.19-db7b86?style=flat-square&logo=styled-components)](https://styled-components.com/)
 [![eslint](https://img.shields.io/badge/eslint-8.27.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
 [![jest](https://img.shields.io/badge/jest-27.5.1-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
